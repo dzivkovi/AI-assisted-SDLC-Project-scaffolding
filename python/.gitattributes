@@ -1,0 +1,32 @@
+# Git attributes for consistent line endings across Windows/WSL/Linux/Mac
+
+# Default behavior - treat all files as text with LF line endings
+* text=auto eol=lf
+
+# Windows-specific files (keep CRLF)
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Binary files (no line ending conversion)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.7z binary
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+
+# Git LFS - track specific large files manually when needed
+# Usage: git lfs track "path/to/large-file.pdf"
+# Common patterns for reference:
+#   *.psd filter=lfs diff=lfs merge=lfs -text    # Photoshop (often multi-MB)
+#   *.mp4 filter=lfs diff=lfs merge=lfs -text    # Videos
+#   *.csv filter=lfs diff=lfs merge=lfs -text    # Large datasets
