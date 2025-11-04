@@ -21,7 +21,7 @@ Copy the `claude-code/` contents to your user's home directory. This installs th
 
 ```bash
 # This makes your custom commands available in every project
-cp -r claude-code/ ~/.claude
+cp -r claude-code/* ~/.claude/
 ````
 
 ### Step 2: Create the New Project
