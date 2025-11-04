@@ -35,7 +35,6 @@ ENV/
 # Environment variables
 .env*
 
-
 # IDE
 .vscode/*
 !.vscode/mcp.json
@@ -67,18 +66,14 @@ CLAUDE.local.md
 *.BAK
 *.old
 
-# Analysis folder - exclude temporary conversation files
-analysis/**/2025-*/
-analysis/**/archive/
+# AI work artifacts
+work/
 
-# starter design docs (later moved to analysis/<issue#>/DESIGN.md)
-analysis/0000/DESIGN*.md
+# Data folders
+data/
+
 # Don't ignore .gitkeep files
 !.gitkeep
-
-# Work folders
-work/
-data/
 
 # LlamaIndex cache/index files (regenerated on each run)
 rag_index/

@@ -12,7 +12,7 @@
 
 ## Setup & Installation
 
-This project requires **Python 3.10 or higher**.
+This project requires **Python 3.12 or higher**.
 
 ```bash
 # 1. Create and activate a virtual environment

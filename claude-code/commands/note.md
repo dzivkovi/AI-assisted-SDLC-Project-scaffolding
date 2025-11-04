@@ -17,14 +17,14 @@ Examples:
 
 ### CRITICAL: I'll run commands to find your next file number:
 The /note command will automatically:
-1. Create today's analysis directory
+1. Create today's `work` directory
 2. Check what numbered files already exist  
 3. Show you the template path with NN to replace
 
 Just use `/note` and I'll handle the directory checking for you.
 
 This command will:
-1. Create the correct date folder (e.g., analysis/2025-07-21)
+1. Create the correct date folder (e.g., work/2025-11-03)
 2. Show you what numbered files already exist
 3. Tell you to pick the next number (NN) and replace meaningful-name
 
@@ -32,7 +32,7 @@ This command will:
 
 ## 1. File Naming and Location
 
-Save the file in the following format: `analysis/$CURRENT_DATE/NN-meaningful-file-name.md` where:
+Save the file in the following format: `work/$CURRENT_DATE/NN-meaningful-file-name.md` where:
 
 ### IMPORTANT NOTES:
 
@@ -41,7 +41,7 @@ Save the file in the following format: `analysis/$CURRENT_DATE/NN-meaningful-fil
 - Always use a bash variable to store and reuse the current date:
 ```bash
 CURRENT_DATE=$(date +%Y-%m-%d)
-mkdir -p analysis/$CURRENT_DATE
+mkdir -p work/$CURRENT_DATE
 ```
 
 - DO NOT manually type the date - always use the $CURRENT_DATE variable to avoid month transcription errors.
@@ -59,7 +59,7 @@ Each entry should include:
 ### WARNING - COMMON BUG:
 The date July 21 is `2025-07-21` NOT `2025-01-21`!
 - 07 = July (NOT 01 which is January)
-- If today is July 21, the folder MUST be `analysis/2025-07-21/`
+- If today is July 21, the folder MUST be `work/2025-07-21/`
 - Context of the conversation
 - The question/query from the user
 - Your analysis and findings as seen in the chat
