@@ -164,7 +164,7 @@ These are your custom AI commands. They are kept separate in your home directory
   * **`/commands`**: The 12+ slash commands that form your development workflow.
   * **`settings.json`**: Configures the permissions for your AI assistant.
 
-### 3\. Project Visibility Setup (`/assets/`)
+### 3\. Project Visibility Setup
 
 GitHub Project board configuration for project tracking and stakeholder visibility.
 
@@ -173,6 +173,50 @@ GitHub Project board configuration for project tracking and stakeholder visibili
   * **Integration:** Links repository issues to project board for tracking
   * **Reference Assets:** Setup screenshots in `/assets/` for quick reference
   * **Purpose:** **Required for Claude Code's `/issue` and `/work` commands** - enables compound engineering workflow where each unit of work makes subsequent work easier through systematic tracking and visibility.
+
+### 4\. Project Label Management
+
+**CRITICAL:** Run `/setup-labels` **before** using `/compounding-engineering:plan`. The `/plan` command needs labels like `story`, `epic-0`, `P0` to exist or `gh issue create` will fail.
+
+#### Quick Start
+
+```bash
+# 1. Check prerequisites
+gh auth status
+
+# 2. Run setup (from inside your new project)
+/setup-labels
+
+# 3. Review generated .github/LABELS.md and approve
+
+# 4. Verify
+gh label list  # Should show ~21 labels (9 defaults + 12 custom)
+```
+
+#### What It Does
+
+The `/setup-labels` command:
+- Reads `specs/StoryBreakdown.md` naturally (LLM understanding, no regex)
+- Extracts epic titles automatically (Epic 0, Epic 1, etc.)
+- Infers domain labels from context (dependencies, air-gapped, etc.)
+- Generates `.github/LABELS.md` documentation
+- Creates labels via `gh` CLI (skips existing ones)
+
+#### Label Types Created
+
+**Standard (3):** story, epic, infra
+**Priorities (3):** P0, P1, P2
+**Epic Tracking (N):** epic-0, epic-1, epic-2... (auto-generated from StoryBreakdown.md)
+**Domain (2-4):** dependencies, air-gapped, security (inferred from PRD.md)
+
+**Total:** 10-20 labels (target range)
+
+#### Troubleshooting
+
+- **"specs/StoryBreakdown.md not found"** → Ensure file exists with `## Epic 0: Title` format
+- **"gh CLI not found"** → Install from https://cli.github.com/ and run `gh auth login`
+- **Labels already exist** → Normal. Command skips existing labels.
+- **Need to add Epic 4 later** → Edit StoryBreakdown.md, run `/setup-labels` again. Only new labels created.
 
 ## Why This Scaffolding Exists
 
