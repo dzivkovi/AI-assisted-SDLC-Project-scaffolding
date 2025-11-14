@@ -28,14 +28,11 @@ Examples:
 - `0001-use-lancedb-for-vector-storage.md`
 - `0002-nomic-embed-code-for-embeddings.md`
 
-## Sample ADRs
+## ADRs
 
 | ADR | Title | Status | Date |
 |-----|-------|--------|------|
-| [0001](0001-example-database-choice.md) | Use PostgreSQL for Primary Database | accepted | 2025-01-15 |
-| [0002](0002-example-api-framework.md) | Use FastAPI for REST API | accepted | 2025-01-20 |
-
-**Note:** These are examples. Replace with your actual ADRs as you make decisions.
+| [0001](0001-remove-explore-command.md) | Remove /explore Command in Favor of Compound Engineering /plan | accepted | 2025-11-12 |
 
 ## Process
 
@@ -71,6 +68,34 @@ This scaffolding uses a two-tier approach for AI-assisted development:
 - Audience: Original researcher
 
 **Workflow:** Research in `/work/` → Decide → Distill to ADR → Link back to research
+
+## Working with AI Assistants
+
+### How to Ask Claude to Create an ADR
+
+**Good prompt:**
+```
+Create an ADR for [decision]. Use the template at docs/adr/template.md.
+Include these alternatives we discussed: [list alternatives].
+Link to the research in work/YYYY-MM-DD/NN-filename.md
+```
+
+**What Claude needs to know:**
+1. The decision you made
+2. Why you needed to make it (context/problem)
+3. What alternatives you considered
+4. Where detailed research lives (work/ directory)
+
+**Example:**
+```
+Create ADR-0003 for choosing PostgreSQL as our database.
+Use template.md. We considered 3 alternatives (MySQL, MongoDB, SQLite).
+Link to the research in work/2025-01-15/01-database-comparison.md.
+The constraint was ACID compliance for financial transactions.
+```
+
+**Common mistake:** Asking "document this decision" without specifying template.
+Claude might create a generic markdown file instead of following Michael Nygard format.
 
 ## Tools
 
