@@ -28,11 +28,14 @@ Examples:
 - `0001-use-lancedb-for-vector-storage.md`
 - `0002-nomic-embed-code-for-embeddings.md`
 
-## ADRs
+## Sample ADRs
 
 | ADR | Title | Status | Date |
 |-----|-------|--------|------|
-| [0001](0001-remove-explore-command.md) | Remove /explore Command in Favor of Compound Engineering /plan | accepted | 2025-11-12 |
+| [0001](0001-example-database-choice.md) | Use PostgreSQL for Primary Database | accepted | 2025-01-15 |
+| [0002](0002-example-api-framework.md) | Use FastAPI for REST API | accepted | 2025-01-20 |
+
+**Note:** These are examples. Replace with your actual ADRs as you make decisions.
 
 ## Process
 
