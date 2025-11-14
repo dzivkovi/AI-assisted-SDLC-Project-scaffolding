@@ -218,6 +218,42 @@ The `/setup-labels` command:
 - **Labels already exist** → Normal. Command skips existing labels.
 - **Need to add Epic 4 later** → Edit StoryBreakdown.md, run `/setup-labels` again. Only new labels created.
 
+### 5. Architecture Decision Records (ADRs)
+
+**NEW:** Track architectural decisions with context for both humans and AI.
+
+In AI-assisted development, decisions evolve rapidly and context windows are limited. ADRs serve as **persistent memory** for your project, capturing not just *what* you chose, but *why* you rejected alternatives.
+
+#### Why ADRs Matter
+
+**The Problem:**
+- AI assistants have limited context windows
+- Team members (human or AI) join projects mid-stream
+- Decisions get re-litigated months later ("Why didn't we use X?")
+- Valuable research gets lost in chat logs
+
+**The Solution:**
+- **Concise decision summaries** (300-500 words) that fit in AI context
+- **Documented alternatives** show what was already tried
+- **Immutable records** with superseding mechanism for evolving decisions
+- **Two-tier system:** Team-facing ADRs + personal research in `/work/`
+
+#### What's Included
+
+ADR templates are **automatically included** in the Python scaffolding at `python/docs/adr/`:
+- **README.md** - Process guide and index
+- **template.md** - Michael Nygard format with AI-specific benefits
+
+When you copy the `python/` template to start a new project, ADRs come with it - no extra steps needed.
+
+#### Learn More
+
+- [AWS: ADR Process Guide](https://docs.aws.amazon.com/prescriptive-guidance/latest/architectural-decision-records/adr-process.html) - Industry standard approach
+- [Refactoring.fm: Engineering Docs in AI Era](https://refactoring.fm/p/how-engineering-docs-change-with) - How AI changes documentation needs
+- [Salesforce: Human-Led, AI-Powered Decisions](https://www.salesforce.com/blog/architectural-decisions-human-led-ai-powered-approach/) - Real-world ADR adoption
+
+**Bottom line:** ADRs are becoming essential for AI-assisted SDLC. Start using them from day one.
+
 ## Why This Scaffolding Exists
 
 | Before (The Old Way) | After (The Magma Inc. Way) |
