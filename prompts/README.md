@@ -8,11 +8,27 @@ Standalone prompts not yet graduated into Claude Code commands or agents.
 |------|---------|-------|
 | `Multi-AI_Research_synthesis_prompt.md` | Synthesize research from 3+ AI systems (GPT, Gemini, Claude) into convergence/divergence analysis | v5, extensively tested throughout 2025 |
 | `Similarity_Score_Clacculation.md` | QA scoring for comparing text blocks across 5 dimensions | For evaluating essay/response similarity |
-| `Architectural_Side-by-Side_Comparison.md` | Compare architectural patterns across multiple repos using rg/ast-grep | Alt: use Compound Engineering's `Explore` subagent |
+| `Architectural_Side-by-Side_Comparison.md` | Compare architectural patterns across multiple repos | See details below |
 
-## Alternative: Compound Engineering Agents
+---
 
-The `Architectural_Side-by-Side_Comparison` workflow can also be done via:
+## Architectural Side-by-Side Comparison
+
+**Problem:** When learning something new (new framework, emerging patterns), docs are outdated or don't exist. Reading one repo tells you how *that person* did it, not if it's the right way.
+
+**Solution:** This prompt makes the AI read 3+ repos at once and report what they agree on. That's the real pattern. Disagreements reveal style preferences or context-specific choices.
+
+**Key features:**
+- **Version check first** - Avoids judging "bad code" that was correct for an older library version
+- **Structured comparison** - Forces a matrix, not impressionistic notes
+- **Decision-ready output** - Tells you which approach for which context (scale vs. MVP vs. learning)
+
+**When to use:**
+- Learning a new ecosystem by comparing popular libraries
+- Making architectural decisions across competing approaches
+- Understanding patterns before they're documented
+
+**Alternative:** Compound Engineering's `Explore` subagent can do similar work:
 
 ```json
 {
@@ -21,5 +37,3 @@ The `Architectural_Side-by-Side_Comparison` workflow can also be done via:
   "description": "Compare architectural patterns"
 }
 ```
-
-See compound engineering docs for other research agents.

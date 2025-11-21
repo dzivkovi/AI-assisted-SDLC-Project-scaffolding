@@ -38,6 +38,12 @@ Explain what you'll search for, run the commands, then list the key files found.
 
 ## PART 2: THE WORKFLOW (Do not change)
 
+### Step 0: Version Context (The Archeologist's Check)
+- Before analyzing code, check `pyproject.toml`, `requirements.txt`, or `package.json`
+- Extract versions of libraries relevant to {ARCHITECTURAL_TOPIC}
+- Note version differences that explain code pattern differences
+- *Why?* Identifying version drift (e.g., Pydantic v1 vs v2, FastMCP 2.11 vs 2.13) prevents false comparisons
+
 ### Step 1: Discovery (Map)
 - Run the discovery searches you explained above in each repository
 - List the *file paths* that appear to be the "Core Implementation" for this topic in each repo
