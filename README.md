@@ -254,6 +254,29 @@ When you copy the `python/` template to start a new project, ADRs come with it -
 
 **Bottom line:** ADRs are becoming essential for AI-assisted SDLC. Start using them from day one.
 
+### 6. AI Research & Evaluation Prompts
+
+**NEW:** Standalone prompts for research, planning, and quality assurance phases.
+
+These aren't scaffolding-specific—they're general-purpose prompts I've battle-tested throughout 2025 for AI-assisted decision making. Use them with any reasoning AI (GPT, Gemini, Claude) before or during development.
+
+#### What's Included
+
+| Prompt | Purpose |
+|--------|---------|
+| **Multi-AI Research Synthesis** | Triangulate 3 reasoning AIs into convergence/divergence analysis |
+| **Similarity Score Calculation** | Regression testing for AI outputs when there's no ground truth |
+| **Architectural Comparison** | Compare patterns across 3+ repos to find consensus |
+| **Consumer Reports Template** | Structured library/tool comparison with star ratings |
+
+#### When to Use
+
+- **Before coding:** Research architectural decisions, compare library options
+- **During development:** Validate that prompt/embedding changes don't break existing answers
+- **During planning:** Get structured comparisons instead of "it depends" answers
+
+**See:** [prompts/README.md](prompts/README.md) for detailed usage and examples.
+
 ## Why This Scaffolding Exists
 
 | Before (The Old Way) | After (The Magma Inc. Way) |
