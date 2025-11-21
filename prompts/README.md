@@ -6,10 +6,58 @@ Standalone prompts not yet graduated into Claude Code commands or agents.
 
 | File | Purpose | Notes |
 |------|---------|-------|
-| `Multi-AI_Research_synthesis_prompt.md` | Synthesize research from 3+ AI systems (GPT, Gemini, Claude) into convergence/divergence analysis | v5, extensively tested throughout 2025 |
-| `Similarity_Score_Clacculation.md` | QA scoring for comparing text blocks across 5 dimensions | For evaluating essay/response similarity |
+| `Multi-AI_Research_synthesis_prompt.md` | Triangulate deep research from 3 reasoning AIs into convergence/divergence analysis | v5, extensively tested throughout 2025. See details below |
+| `Similarity_Score_Clacculation.md` | QA scoring for comparing text blocks across 5 dimensions | See details below |
 | `Architectural_Side-by-Side_Comparison.md` | Compare architectural patterns across multiple repos | See details below |
 | `Consumer_Reports_Research_ANYTHING_Template.md` | Structured comparison for choosing libraries/products | See details below |
+
+---
+
+## Multi-AI Research Synthesis
+
+**Why this exists:** Deep research AIs each do great work individually. But each has blind spots, frames things differently, and no single AI tells you what's actually settled vs. what's just one opinion. I needed a way to triangulate.
+
+**How it works:** Ask the same complex research question to 3 reasoning AIs (GPT-5, Gemini, Claude). Feed all three responses into this prompt. It synthesizes them into a structured analysis: where they agree (high confidence), where 2/3 agree (likely true), unique insights from each (hidden gems), and where they conflict (requires your judgment).
+
+**Key features:**
+- **Convergence scoring** - Universal Agreement (3/3) = act on it, Strong Consensus (2/3) = verify, Single Source = investigate
+- **Divergence analysis** - Names the conflicts explicitly so you know where expert opinion differs
+- **Model-specific gems** - Extracts unique insights each AI contributed that others missed
+- **Implementation roadmap** - Ends with phased next steps, not just a research dump
+
+**Tested on:**
+- RAG architecture for 1000+ page structured documents (regulatory compliance focus)
+- NotebookLM-style research synthesis for technical documentation
+- Framework selection decisions with conflicting expert opinions
+
+**When to use:**
+- High-stakes architectural decisions where "it depends" isn't good enough
+- Learning a complex domain where no single source has complete coverage
+- Need to justify decisions with evidence from multiple authoritative sources
+- Want to know what's actually consensus vs. what's one AI's opinion
+
+---
+
+## Similarity Score Calculation (AI Output Regression Testing)
+
+**Why this exists:** When tuning a RAG system—different embeddings, prompt variations, temperature settings—you get different answers to the same question. But there's no "correct answer" to compare against. It's like grading student essays: you can't just diff them. I needed a way to measure drift without ground truth.
+
+**How it works:** Feed in a baseline answer (your reference point, the "before") and a submitted answer (output after you changed something). The prompt scores similarity across 5 orthogonal dimensions, then averages them into a single percentage.
+
+**The 5 dimensions:**
+- **Semantic** - Do they convey the same meaning?
+- **Lexical** - Do they use similar vocabulary?
+- **Structural** - Same organization and flow?
+- **Code Snippets** - Same examples and code blocks?
+- **Citations** - Reference the same sources?
+
+**The insight:** You don't need to know if either answer is *correct*. You just need to know if your changes caused *drift*. High similarity (>90%) = safe change. Low similarity = investigate why.
+
+**When to use:**
+- A/B testing prompt variations before deploying to production
+- Validating that embedding model changes don't break existing answers
+- Regression testing after RAG pipeline modifications
+- Comparing outputs across different LLM providers or versions
 
 ---
 
