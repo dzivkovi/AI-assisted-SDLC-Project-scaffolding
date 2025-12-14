@@ -1,6 +1,12 @@
 # Claude Code Custom Commands
 
-This directory contains custom slash commands for Claude Code. Each `.md` file in the `commands/` subdirectory defines a reusable command.
+This directory contains custom slash commands and configuration for Claude Code.
+
+## Directory Structure
+
+- **`commands/`** - Slash commands (each `.md` file defines a reusable command)
+- **`personas/`** - Communication style presets for different team dynamics
+- **`settings.json`** - Claude Code permissions and configuration
 
 ## Available Commands
 
@@ -37,3 +43,37 @@ Type any command in a Claude Code session. For example:
 - `/explore how to add caching` - Explore implementation approaches
 - `/issue 'Add rate limiting to API'` - Create GitHub issue
 - `/work 42` - Implement issue #42
+
+## Communication Personas
+
+The `personas/` directory contains communication style presets that customize Claude's output for different team dynamics.
+
+### Available Personas
+
+| Persona | Use When |
+|---------|----------|
+| `diplomatic.md` | Professional tone, understated AI involvement, client deliverables |
+| `incognito.md` | Environments favoring traditional development workflows |
+
+Not every team needs a persona - AI-first teams can use Claude's default style.
+
+### How to Use
+
+Add to your project's root `CLAUDE.md`:
+
+```text
+Read ~/.claude/personas/diplomatic.md
+```
+
+This instructs Claude to adopt that communication style for the entire project. You can also reference personas mid-conversation when switching contexts.
+
+### Why This Exists
+
+Different teams have different comfort levels with AI tooling. Some prefer understated AI involvement in code reviews, commits, and documentation. Personas let you:
+
+- Match existing team communication norms
+- Reduce friction with AI-skeptical colleagues
+- Produce client-appropriate deliverables
+- Adapt to organizational policies on AI attribution
+
+See [personas/README.md](personas/README.md) for details on creating custom personas.
