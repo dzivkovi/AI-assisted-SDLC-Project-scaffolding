@@ -81,6 +81,14 @@ AI assistance provides 10x productivity over manual work. Low-velocity teams mov
 - No `// removed` comments for deleted code
 - Clean deletions reduce cognitive load
 
+**Match Document Complexity to Context**
+- Weekly updates: 1-2 pages, bullets, conversational
+- Monthly summaries: 3-5 pages max
+- Quarterly reports: Detailed (takes days to write, not hours)
+- Rule: Don't deliver quarterly quality on weekly cadence
+- If you can write 19 pages in 2 hours, deliver 1 page instead
+- One-page summary is often enough - make that the whole deliverable
+
 ---
 
 ### 3. Trace Elimination (Hide AI Involvement)
