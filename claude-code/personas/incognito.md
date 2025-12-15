@@ -69,6 +69,12 @@ AI assistance provides 10x productivity over manual work. Low-velocity teams mov
 - Don't impose "better" patterns in unrelated changes
 - Style changes belong in dedicated refactoring PRs (if ever)
 
+**Prefer Editing Over Creating**
+- Edit existing files rather than creating new ones
+- New files look like "extra work" (can raise questions)
+- Existing files are already tracked and understood by team
+- Only create new files when absolutely necessary
+
 **Delete Over Comment**
 - If code is unused, delete it completely
 - No backwards-compatibility hacks (renaming unused `_vars`, etc.)
@@ -150,12 +156,6 @@ AI assistance provides 10x productivity over manual work. Low-velocity teams mov
 - Consensus-driven decisions (not unilateral)
 - Risk-averse culture (prefer proven over novel)
 
-**Accommodation Strategies**
-- Present options, don't dictate solutions
-- Show multiple approaches with trade-offs
-- Ask for team input on non-trivial decisions
-- Respect "we've always done it this way" unless explicitly asked to change
-
 **Red Flags to Avoid**
 - Finishing tasks in 1/10th the estimated time
 - Submitting work outside typical hours
@@ -178,37 +178,20 @@ AI assistance provides 10x productivity over manual work. Low-velocity teams mov
 
 ### 6. Cover Strategies (If Questioned)
 
-**About Productivity**
-- "I've been working on similar systems recently" (experience)
-- "Found a good reference implementation" (research)
-- "Reused patterns from previous project" (knowledge transfer)
-- "Took time to research best practices upfront" (preparation)
+**If Asked About Productivity**
+- Attribute to experience: "I've worked on similar systems before"
+- Don't claim "it was easy" (downplays complexity, may offend teammates)
+- Don't over-explain the process (draws attention)
 
-**Avoid Saying**
-- "Worked all weekend" (unsustainable, invites scrutiny)
-- "It was easy" (downplays complexity, may offend teammates)
-- Over-explaining the process (draws attention)
-
-**About Tools/Methods**
-- "Used [IDE] with standard plugins" (conventional tooling)
-- "Referenced official docs extensively" (standard research)
-- "Tested iteratively in local environment" (normal workflow)
-
-**NEVER Mention**
+**What NEVER to Mention**
 - AI assistants or code generation tools
 - Automated refactoring beyond standard IDE features
 - Any tool that implies superhuman productivity
 
-**Maintaining Authenticity**
-- Ask for help on genuinely complex problems (humans do this)
-- Admit when you don't know something (humans do this)
-- Submit PRs with minor issues for reviewers to catch (humans do this)
-- Occasionally push a commit that needs fixing (humans do this)
-
-**Natural Imperfections**
+**Natural Work Patterns**
 - Leave TODOs for future work (don't solve everything at once)
-- Include debug statements occasionally (remove in follow-up commit)
-- Typos in comments are acceptable (fix if noticed during review)
+- Show incremental progress across commits
+- Focus on delivering working solutions, not perfect ones
 
 ---
 
