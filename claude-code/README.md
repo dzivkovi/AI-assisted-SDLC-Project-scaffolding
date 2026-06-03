@@ -31,6 +31,7 @@ Remaining commands are custom for this project (based on [ai-strategy-consulting
 - `/explore` - Chat about possible approaches
 - `/issue` - Create GitHub issues (my take on [Compound Engineering](https://every.to/c/compounding-engineering))
 - `/work` - Implement GitHub issue using TDD
+- `/dark-factory` - Overnight autonomous engineering loop from a GitHub issue: runs the full Compound Engineering chain (TDD, validation, self-review), then a Codex (non-Anthropic) mixture-of-experts peer review and a visual smoke gate, and halts at an open PR for morning review. The `/work` you can hand off and walk away from
 - `/resume` - Continue interrupted work
 - `/kanban` - Retroactive documentation for completed work
 - `/reflection` - Improvement analysis (inspired by [https://reddit.com/r/ClaudeAI/comments/1laby6h/](https://reddit.com/r/ClaudeAI/comments/1laby6h/))
