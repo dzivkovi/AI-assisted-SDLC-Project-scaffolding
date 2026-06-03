@@ -23,8 +23,8 @@ These commands are from [Anthropic's Claude Cookbooks](https://github.com/anthro
 Remaining commands are custom for this project (based on [ai-strategy-consulting](https://github.com/dzivkovi/ai-strategy-consulting/tree/main/.claude)):
 
 **Quick Saves:**
-- `/save` - **FAST** smart save (Haiku-powered, saves to `work/`, auto-naming)
-- `/note` - *Deprecated* (use `/save` instead - faster, cleaner, better organized)
+- `/save` - **FAST** smart save (Haiku-powered, saves to `work/`, auto-generates semantic filename)
+- `/note` - **Thorough** save (Sonnet-powered, more guardrails, better for important captures)
 - `/learnings` - Consolidate final learnings since last `/save` (or full conversation if none). Captures only refined positions, not intermediate iterations - emulates Compound Engineering's `/workflows:compound` for knowledge compounding
 
 **Workflow:**
