@@ -29,12 +29,17 @@ Remaining commands are custom for this project (based on [ai-strategy-consulting
 
 **Workflow:**
 - `/explore` - Chat about possible approaches
-- `/issue` - Create GitHub issues (my take on [Compound Engineering](https://every.to/c/compounding-engineering))
-- `/work` - Implement GitHub issue using TDD
-- `/dark-factory` - Overnight autonomous engineering loop from a GitHub issue: runs the full Compound Engineering chain (TDD, validation, self-review), then a Codex (non-Anthropic) mixture-of-experts peer review and a visual smoke gate, and halts at an open PR for morning review. The `/work` you can hand off and walk away from
-- `/resume` - Continue interrupted work
-- `/kanban` - Retroactive documentation for completed work
+- `/dark-factory` - Overnight autonomous engineering loop from a GitHub issue: runs the full Compound Engineering chain (TDD, validation, self-review), then a Codex (non-Anthropic) mixture-of-experts peer review and a visual smoke gate, and halts at an open PR for morning review. A spec goes in at midnight; a merge-ready PR is on your desk by breakfast - see the writeup: [**Software dark factories stopped being a fairy tale for me**](https://www.linkedin.com/feed/update/urn:li:activity:7453892609665810434/)
 - `/reflection` - Improvement analysis (inspired by [https://reddit.com/r/ClaudeAI/comments/1laby6h/](https://reddit.com/r/ClaudeAI/comments/1laby6h/))
+
+**Obsolete - superseded by [Compound Engineering](https://every.to/guides/compound-engineering):**
+
+These were early, pre-publication attempts to reverse-engineer the Compound Engineering workflow (back when it was discussed but not yet released). It is now a published framework with its own commands - use those instead. Kept here only for historical reference.
+
+- `/work` - Implement a GitHub issue with TDD - now `/ce-work`
+- `/issue` - Create GitHub issues - now Compound Engineering's issue flow
+- `/kanban` - Retroactive documentation for completed work
+- `/resume` - Continue interrupted work
 
 **Quality & Security:**
 - `/guardrail` - Confidentiality guardrail review (v2.6) - see [dedicated section below](#confidentiality-guardrail)
@@ -46,8 +51,7 @@ Type any command in a Claude Code session. For example:
 - `/save "your answer about git attributes"` - Save specific content
 - `/notebook-review` - Review Jupyter notebooks (Anthropic command)
 - `/explore how to add caching` - Explore implementation approaches
-- `/issue 'Add rate limiting to API'` - Create GitHub issue
-- `/work 42` - Implement issue #42
+- `/dark-factory 42` - Hand off issue #42 overnight; wake up to a merge-ready PR
 - `/guardrail` - Interactive: prompts for scope + client
 - `/guardrail git Mastercard` - Fast: skip prompts, targeted scan
 - `/learnings` - Save refined learnings from current conversation
