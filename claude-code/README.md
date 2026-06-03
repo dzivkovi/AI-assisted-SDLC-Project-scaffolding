@@ -53,7 +53,7 @@ CLI sessions are GUIDs (`claude --resume 286ccdec-...`); the VS Code / web picke
 
 **Install:**
 ```bash
-cp claude-code/tools/claude-sessions.js ~/.claude/tools/claude-sessions.js
+mkdir -p ~/.claude/tools && cp claude-code/tools/claude-sessions.js ~/.claude/tools/
 # Add to ~/.bashrc:
 cs() { node "$HOME/.claude/tools/claude-sessions.js" "$@"; }
 ```
