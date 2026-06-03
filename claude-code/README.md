@@ -6,6 +6,7 @@ This directory contains custom slash commands and configuration for Claude Code.
 
 - **`commands/`** - Slash commands (each `.md` file defines a reusable command)
 - **`personas/`** - Communication style presets for different team dynamics
+- **`tools/`** - Shell utilities for working with Claude Code
 - **`settings.json`** - Claude Code permissions and configuration
 
 ## Available Commands
@@ -43,6 +44,32 @@ These were early, pre-publication attempts to reverse-engineer the Compound Engi
 
 **Quality & Security:**
 - `/guardrail` - Confidentiality guardrail review (v2.6) - see [dedicated section below](#confidentiality-guardrail)
+
+## Shell Utilities (`tools/`)
+
+### `cs` — Claude Session name mapper
+
+CLI sessions are GUIDs (`claude --resume 286ccdec-...`); the VS Code / web picker shows human names ("Migrate MagmaInc website to Astro"). `cs` translates between them.
+
+**Install:**
+```bash
+cp claude-code/tools/claude-sessions.js ~/.claude/tools/claude-sessions.js
+# Add to ~/.bashrc:
+cs() { node "$HOME/.claude/tools/claude-sessions.js" "$@"; }
+```
+
+**Usage:**
+```bash
+cs                   # sessions for the current directory's project
+cs --all             # all sessions across all projects
+cs astro             # find sessions whose name contains "astro"
+cs 286ccdec          # name + resume line for a GUID prefix
+cs --json            # machine-readable output (pipe to jq)
+```
+
+A leading `~` marks a session with no auto-title (CLI-only sessions often lack one); the name shown is its first prompt.
+
+> **Fragility note:** relies on undocumented JSONL record types (`ai-title`, `custom-title`, `agent-name`) verified on Claude Code v2.1.159. May break on future upgrades. Read-only — never modifies transcripts.
 
 ## Usage
 
