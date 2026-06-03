@@ -6,7 +6,7 @@
 
 This repository is the master "factory" for all new **Magma Inc.** projects. It provides three core components for our "spec-driven development" workflow:
 
-1.  **An AI Assistant Kit (`claude-code/`):** A set of custom, client-safe slash commands (`/issue`, `/work`, etc.) that install locally to your home directory. This is your "AI team."
+1.  **An AI Assistant Kit (`claude-code/`):** A set of custom, client-safe slash commands (`/dark-factory`, `/guardrail`, etc.) that install locally to your home directory. This is your "AI team." (The early issue-driven commands here - `/issue`, `/work`, `/kanban`, `/resume` - were a pre-publication reverse-engineering of [Compound Engineering](https://every.to/guides/compound-engineering) and are now superseded by its `/ce-...` commands.)
 2.  **A Project Template (`python/`):** A production-ready, proprietary Python project skeleton with a best-practice `src` layout. This is the "product."
 3.  **Project Visibility Setup:** GitHub Project board configuration for project tracking and stakeholder visibility. **Required for Claude Code compound engineering workflow.**
 
@@ -42,7 +42,7 @@ git commit -m "Initial scaffold"
 
 ### Step 3: Set Up Project Tracking (GitHub Project Board)
 
-**CRITICAL:** This step is **required** for the Claude Code compound engineering workflow. The `/issue` and `/work` commands depend on a properly configured GitHub Project board for tracking and transparency.
+This step supports an issue-driven [Compound Engineering](https://every.to/guides/compound-engineering) workflow: each unit of work is tracked on a GitHub Project board for transparency. (This repo's original `/issue` and `/work` commands that drove the board are now superseded by Compound Engineering's `/ce-...` commands; set the board up if you want that tracking, skip it if you don't.)
 
 #### Creating Your Kanban Board
 
@@ -172,7 +172,7 @@ GitHub Project board configuration for project tracking and stakeholder visibili
   * **Automation:** Auto-route issues to Backlog when added, to Done when closed
   * **Integration:** Links repository issues to project board for tracking
   * **Reference Assets:** Setup screenshots in `/assets/` for quick reference
-  * **Purpose:** **Required for Claude Code's `/issue` and `/work` commands** - enables compound engineering workflow where each unit of work makes subsequent work easier through systematic tracking and visibility.
+  * **Purpose:** Supports an issue-driven [Compound Engineering](https://every.to/guides/compound-engineering) workflow where each unit of work makes subsequent work easier through systematic tracking and visibility. (The original `/issue` and `/work` commands are now superseded by its `/ce-...` commands.)
 
 ### 4\. Project Label Management
 
