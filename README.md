@@ -6,11 +6,23 @@
 
 This repository is the master "factory" for all new **Magma Inc.** projects. It provides three core components for our "spec-driven development" workflow:
 
-1.  **An AI Assistant Kit (`claude-code/`):** A set of custom, client-safe slash commands (`/dark-factory`, `/guardrail`, etc.) that install locally to your home directory. This is your "AI team." (The early issue-driven commands here - `/issue`, `/work`, `/kanban`, `/resume` - were a pre-publication reverse-engineering of [Compound Engineering](https://every.to/guides/compound-engineering) and are now superseded by its `/ce-...` commands.)
+1.  **An AI Assistant Kit (`claude-code/`):** A set of custom, client-safe slash commands ([`/dark-factory`](#flagship-dark-factory--overnight-autonomous-engineering), `/guardrail`, etc.) that install locally to your home directory. This is your "AI team." (The early issue-driven commands here - `/issue`, `/work`, `/kanban`, `/resume` - were a pre-publication reverse-engineering of [Compound Engineering](https://every.to/guides/compound-engineering) and are now superseded by its `/ce-...` commands.)
 2.  **A Project Template (`python/`):** A production-ready, proprietary Python project skeleton with a best-practice `src` layout. This is the "product."
 3.  **Project Visibility Setup:** GitHub Project board configuration for project tracking and stakeholder visibility. **Required for Claude Code compound engineering workflow.**
 
 This system is designed so that the **AI Assistant Kit** (the tools) operates *on* the **Project Template** (the code), using **Project Visibility** for tracking and transparency, while remaining invisible to the client.
+
+## Flagship: `/dark-factory` — Overnight Autonomous Engineering
+
+Hand it a GitHub issue before bed; wake up to a merge-ready pull request. `/dark-factory` runs the full [Compound Engineering](https://every.to/guides/compound-engineering) chain — plan, TDD, implementation, self-review — then a non-Anthropic (Codex) mixture-of-experts peer review and a visual smoke gate, and halts right before the merge button so a human still clicks it.
+
+Proof, not a promise: [PR #41 on video-intel](https://github.com/dzivkovi/video-intel/pull/41) — 8 commits, 653 tests passing (49 new), a real-data smoke test matching the plan's estimate, and a multi-agent review that surfaced 2 polish items overnight, both applied cleanly. Ten minutes of human review, squash, merge.
+
+Read the full story: [**"Software dark factories stopped being a fairy tale for me"**](https://www.linkedin.com/feed/update/urn:li:activity:7453892609665810434/) (LinkedIn).
+
+- Command: [`claude-code/commands/dark-factory.md`](claude-code/commands/dark-factory.md)
+- Built on [Kieran Klaassen's Compound Engineering plugin](https://github.com/EveryInc/compound-engineering-plugin)
+- Repo it was proven on: [dzivkovi/video-intel](https://github.com/dzivkovi/video-intel)
 
 ## How to Use: The 3-Step Workflow
 
