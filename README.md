@@ -14,7 +14,7 @@ This system is designed so that the **AI Assistant Kit** (the tools) operates *o
 
 ## Flagship: `/dark-factory` — Overnight Autonomous Engineering
 
-Hand it a GitHub issue before bed; wake up to a merge-ready pull request. `/dark-factory` runs the full [Compound Engineering](https://every.to/guides/compound-engineering) chain — plan, TDD, implementation, self-review — then a non-Anthropic (Codex) mixture-of-experts peer review and a visual smoke gate, and halts right before the merge button so a human still clicks it.
+Hand it a list of GitHub issues before bed; wake up to merged PRs. `/dark-factory` runs each ticket through the full [Compound Engineering](https://every.to/guides/compound-engineering) chain — plan, TDD, implementation, self-review — plus a non-Anthropic (Codex) peer review and a visual smoke gate, then **merges its own work** on clean-green instead of stalling for a human at 2am. Unattended is not unlimited: destructive actions outside its own branches are always parked, never performed, and everything that genuinely needs you lands in one end-of-run `## Decisions` list instead of scattered halt points. Say "review mode" / "halt before merge" in the invocation to fall back to opening PRs without merging them.
 
 Proof, not a promise: [PR #41 on video-intel](https://github.com/dzivkovi/video-intel/pull/41) — 8 commits, 653 tests passing (49 new), a real-data smoke test matching the plan's estimate, and a multi-agent review that surfaced 2 polish items overnight, both applied cleanly. Ten minutes of human review, squash, merge.
 
