@@ -43,21 +43,26 @@ Pick the 3-7 claims whose truth would alter the recommendation: those supporting
 
 Hard gates come only from constraints the asker stated or that are logically unavoidable; label inferred ones as assumptions, and Unknown is not Pass. Then order every recommendation by the cost of acting on it, cheapest first: the first item should be startable within days, with escalating rungs behind it. For each rung: what it costs, what it buys, what result would justify the next rung.
 
-### 7. Output: one screen, then one layer down
+### 7. Output: executive layer on top, full research body below
 
-**Layer 1 - the brief.** Hard cap 900 words. Leads with the answer in one paragraph. Then: top findings (max 5, each with both labels), the action ladder from step 6, outliers worth an afternoon (max 5), the single critical unknown, and what would change the recommendation. A reader who stops here has the decision.
+*(Corrected 2026-07-28 after the held-out run failed the morning test - see VALIDATION.md. The original spec capped the entire output at 900 words plus a thin appendix; the reader could not recognize their own research corpus in the result. The compression rule was aimed at repetition and never meant amputation: the asker reads the front carefully and keeps the body as the reference they study and quote from.)*
 
-**Layer 2 - the appendix.** Only what the brief's claims rest on: verification notes, the comparison table if the question was a bake-off, dropped candidates with one-line reasons, disagreements between reports. No finding is explained twice; the brief carries the conclusion, the appendix carries the evidence. If the audience dial is "self", the appendix may be a stub.
+**Layer 1 - the executive layer.** Roughly 600-900 words. Leads with the answer in one paragraph. Then: top findings (max 5, each with both labels), the action ladder from step 6, outliers worth an afternoon, the single critical unknown, and what would change the recommendation. A reader who stops here has the decision.
+
+**Layer 2 - the full research body. Required, not optional, whenever the question is a cold start or the asker is learning the domain.** No word cap. It carries everything from the source reports that survives dedup and the wrinkle test, organized once: the full convergence map, complete candidate/architecture analyses with per-report attribution, merged comparison tables, domain deep-dives (regulatory, measurement, practices - whatever the question's shape demands), model-specific gems, conflicts and gaps, verification notes, and the roadmap. The asker must be able to recognize their source research in it and trace every claim's lineage (which report, what evidence). Dedup means each finding has one home - it never means dropping the finding.
+
+Only when the asker explicitly requests brief-only does Layer 2 shrink to a stub.
 
 Never: repeat a finding across sections, invent weights or scores the asker did not give, assign model personalities from one run, present an inference as a fact, or write market commentary that changes no decision.
 
-### 8. Self-check, five items
+### 8. Self-check, six items
 
 1. Is the answer in the first paragraph?
 2. Are discovery and evidence labelled separately everywhere?
 3. Were the decision-changing sources actually opened, or is the downgrade stated?
 4. Did the outliers survive with their labels, including at least one that matches the asker's wrinkle?
 5. Is the first ladder rung startable this week?
+6. Would the asker recognize their source research in the output, and can they trace any claim back to which report found it? (Added 2026-07-28 - the check the first held-out run failed.)
 
 ## Form and evaluation
 
