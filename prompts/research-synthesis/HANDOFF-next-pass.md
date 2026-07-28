@@ -56,7 +56,7 @@ I hit topics cold, regularly, on consulting work. The same question goes to thre
 
 Both halves are the point. Anything optimizing one at the other's cost has missed what this is for.
 
-### The goal
+### The /goal
 
 **Get me from three long reports to "I know what to do next, and I know which strange outlier deserves my afternoon" with as little ceremony as possible.**
 
