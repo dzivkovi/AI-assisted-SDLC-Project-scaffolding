@@ -46,9 +46,15 @@ Follow `references/report-template.md` for structure: an executive layer (~600-9
 
 Output file: `<corpus-folder>/<YYYY-MM-DD>-<topic>-triangulation.md`, unless the user asked for a different destination.
 
+Write long reports in appended parts rather than one write call, and end the file with this exact final line, which doubles as the completeness marker for anyone (or anything) checking on the run:
+
+```text
+<!-- triangulate:complete -->
+```
+
 ## Step 5 - Self-check, then deliver
 
-Run the six-item self-check in `references/method.md` section 8. Fix failures before delivering. In chat, reply with two or three lines plus the file link - never narrate the report back.
+Run the six-item self-check in `references/method.md` section 8. Then re-read the tail of the output file and confirm the Quality Control section and the `<!-- triangulate:complete -->` marker are present; if the file is incomplete, resume writing from where it stops rather than restarting. In chat, reply with two or three lines plus the file link - never narrate the report back.
 
 ## Acquiring the corpus (context, not a step)
 
