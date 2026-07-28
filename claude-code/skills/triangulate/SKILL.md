@@ -21,11 +21,16 @@ The user provides a folder (or list of files). Identify in it:
 - **Reports**: the research documents, usually one per agent (filenames often contain claude / gemini / openai / grok or the agent's name).
 - **The question**: the original research prompt given to those agents, usually named `_question*.md`, `*question*.md`, or `*prompt*.md`.
 
-Rules:
+The question does not have to be a file. Resolve it in this priority order:
+
+1. **Pasted in the invocation**: if the user's message contains the research question (or constraints/context) as plain text, that IS the question - do not ask for it again. Save it into the corpus folder as `_question.md` so the corpus stays self-contained and the run is reproducible.
+2. **A file in the corpus** (the `_question*` / `*prompt*` patterns above).
+3. **Neither, and the user is available**: use AskUserQuestion to get (a) the original research question or a paste of it, (b) any hard constraints, (c) decision context - who will use the result and for what. Save the answer as `_question.md`.
+4. **Neither, and you are unattended**: reconstruct the question from the reports' own framing, label it **ASSUMED QUESTION** at the top of your output, and proceed.
+
+Other rules:
 
 - Fewer than 2 reports: stop and tell the user triangulation needs at least two independent reports.
-- Question file missing and the user is available: use AskUserQuestion to get (a) the original research question or a pointer to it, (b) any hard constraints, (c) decision context - who will use the result and for what.
-- Question file missing and you are unattended: reconstruct the question from the reports' own framing, label it **ASSUMED QUESTION** at the top of your output, and proceed.
 - **Independence rule: do not read prior syntheses, summaries, or analysis files that may sit in the same folder tree.** Your analysis must come from the question and the reports only. Ignore every file you have not classified as a report or the question.
 
 ## Step 1 - Frame, before reading any report
