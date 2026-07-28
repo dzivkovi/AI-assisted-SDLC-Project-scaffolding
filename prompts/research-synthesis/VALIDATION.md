@@ -1,20 +1,28 @@
-# Validation record - Triangulate method
+# Development record - triangulate method
 
-One row per validation run. Full run artifacts live in `research/` (untracked); this file carries only the verdicts.
+How the method in [`claude-code/skills/triangulate/`](../../claude-code/skills/triangulate/SKILL.md) was tested while it was being built. This is a development log, not external validation: see the limitations at the bottom before treating any row as proof.
 
-| Date | Corpus | Result | Method changed? |
-|------|--------|--------|-----------------|
-| 2026-07-28 | DeepWiki alternatives (design corpus 1, known ground truth) | Pass on all five checks: security outlier survived, Repowise vendor-labelled, Understand Anything judged on fit not popularity, critical unknown = bake-off, 640-word brief vs V5's 3,562 with zero cross-section repetition | No |
-| 2026-07-28 | AI SDR (held out, no prior synthesis, architecture/strategy shape) | Mixed. Analytical core passed: 4 decision-changing claims opened and held (CRMArena-Pro, Art. 50 date, Rasa, Drift), one resolved a direct report conflict; vendor-family dedup fired independently on a second corpus. **Morning test FAILED**: the 900-word-total output was unrecognizable to the reader as a synthesis of their research - "I cannot recognize any of the research I gave you." Root cause: the method capped the whole output, when the asker's actual pattern (observed across every V5/V6 report they kept using) is front-read-carefully + body-kept-as-reference. Compression was meant to kill repetition, not the research body. Fix: METHOD.md step 7 rewritten (full body required for cold-start/learning runs), self-check item 6 added. Full report delivered: `research/ai-sdr/2026-07-28-ai-sdr-full-synthesis.md` | No |
+Runs were performed against private research corpora. Where a row cites evidence held privately, it says so.
 
-| 2026-07-28 | Bake-off: skill v1 executed by Opus 5 and Codex (GPT-5.x) on both corpora, unattended, pre-registered 10-criterion rubric | **4/4 runs at rubric ceiling (20/20).** Source-family quarantine fired for both runners on both corpora. Runners surpassed the reference syntheses in places: 21x stat traced to a 2007 vendor study (sdr-opus), Law 25 s.12.1 scope corrected at LegisQuebec (sdr-codex), a 2/3 consensus claim refuted by opening its own cited page (dw-opus). Only failure was the harness: evaluator read a detached runner's file mid-write. Full scoring in `research/bakeoff/learnings.md` | Yes - v2 adds a completion sentinel and write-in-parts; analytical rules unchanged |
+| Date | Corpus / run | Outcome | Analytical rules changed | Output contract or harness changed |
+|---|---|---|---|---|
+| 2026-07-28 | DeepWiki alternatives. Design corpus, partial ground truth known from an earlier grading session | Passed all five checks in use at the time: the security-boundary outlier survived, a vendor-cited candidate was labelled as such, a popular tool was judged on fit rather than popularity, the critical unknown was identified as an empirical bake-off, and the brief carried no cross-section repetition | No | No |
+| 2026-07-28 | AI SDR. Held-out corpus: no prior synthesis, and a different question shape (architecture and strategy rather than candidate selection) | Mixed. Analytical core held: four decision-changing claims were opened and verified, one of which resolved a direct conflict between two reports, and source-family deduplication fired independently on a second corpus. **The output contract failed**: the report was capped at ~900 words in total and the reader could not recognize their own source research in it | No | **Yes.** Step 7 rewritten to require a full research body alongside the executive layer; self-check item 6 added ("would the asker recognize their source research?") |
+| 2026-07-28 | Bake-off. Skill v1 executed unattended by two runner classes (Claude Opus 5 and Codex GPT-5.x) across both corpora, scored against a 10-criterion rubric written before any output existed | All four runs passed every threshold criterion. Source-family quarantine fired for both runners on both corpora. Runners contributed findings beyond the reference syntheses: a widely-quoted sales statistic traced to a 2007 vendor-sponsored study, a privacy-law scope correction made against primary legislation, and a two-of-three consensus claim refuted by opening the very page both reports cited. The one failure was in the evaluation harness, not the method: a detached runner's output file was read while it was still being written | No | **Yes.** v2 adds a completion sentinel every report must end with, has the runner verify its own file tail, and writes long reports in appended parts |
+
+## What these runs do and do not establish
+
+**Do**: the written method is followed by executors other than its author, across two question shapes and two runner classes, without the author present. The rules that most often go wrong elsewhere - treating agreement as evidence, ranking on vendor-supplied claims, compressing away single-source findings - held in every run.
+
+**Do not**: rank runners, or establish quality against any external baseline. Four passing scores on a rubric whose criteria were all met by every run measures a floor, not a difference. The rubric was written by the same author as the method, no scoring was blinded, and no independent party has reproduced any run. This is development evidence, not external validation, and should be described that way.
 
 ## Standing limitations
 
-- The 2026-07-28 run validates that the method **encodes** the lessons from the grading session, not that it discovers such lessons unaided: the runner had read the session before designing the method. Discovery power is only testable on corpora with no prior synthesis, which is what the held-out run measures.
-- Step 5 (open-the-source verification) was not exercised on 2026-07-28; first exercised in the held-out AI SDR run.
-- Comparison to V5/V6 outputs used the grading session's documented account of those outputs, not a fresh read of the output PDFs in Dropbox.
+- The first run validates that the method **encodes** lessons from an earlier grading session that its author had read. Discovery power on genuinely novel corpora is only tested by held-out runs.
+- Both corpora are technology-selection and technology-strategy questions. Behaviour on scientific, market, or policy research is untested.
+- Bake-off outputs were produced by skill v1, before the completion sentinel existed. The current evaluation guide asks scorers to confirm that marker, which those historical artifacts cannot carry.
+- Supporting material - the filled rubric, the four outputs, and the corpora - is held privately. Rows above summarize it; they do not let a reader audit it.
 
-## What a future run must log
+## What a future run should log
 
-Date, corpus, the five self-check results, whether known-good outliers survived (when ground truth exists), brief word count, and whether the method file changed as a result (with the commit hash if so).
+Date, corpus and its question shape, runner class, skill version, the six self-check results, whether known-good outliers survived where ground truth exists, and whether the change (if any) was to an analytical rule, the output contract, or the harness. Keeping those three kinds of change distinct is what makes this log worth reading.

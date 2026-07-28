@@ -6,7 +6,7 @@ Standalone prompts not yet graduated into Claude Code commands or agents.
 
 | File | Purpose | Notes |
 |------|---------|-------|
-| `Multi-AI_Research_synthesis_prompt.md` | Triangulate deep research from 3 reasoning AIs into convergence/divergence analysis | v5, extensively tested throughout 2025. See details below |
+| `Multi-AI_Research_synthesis_prompt.md` | Triangulate deep research from 3 reasoning AIs into convergence/divergence analysis | **Superseded** by the [`triangulate` skill](../claude-code/skills/triangulate/SKILL.md). Kept as the v5 original; lineage in [`research-synthesis/`](research-synthesis/README.md). See details below |
 | `Similarity_Score_Clacculation.md` | QA scoring for comparing text blocks across 5 dimensions | See details below |
 | `Architectural_Side-by-Side_Comparison.md` | Compare architectural patterns across multiple repos | See details below |
 | `Consumer_Reports_Research_ANYTHING_Template.md` | Structured comparison for choosing libraries/products | See details below |

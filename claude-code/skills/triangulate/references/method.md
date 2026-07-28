@@ -1,6 +1,6 @@
 # Triangulate - the analytical method
 
-Follow these rules exactly. They were distilled from six generations of a research-synthesis prompt and two validated runs; each rule exists because its absence produced a documented failure.
+Follow these rules exactly. They were distilled from six generations of a research-synthesis prompt and tested on two research corpora; each rule exists because its absence produced a documented failure.
 
 ## 1. Frame before reading
 
