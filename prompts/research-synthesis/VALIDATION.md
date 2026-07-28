@@ -5,6 +5,7 @@ One row per validation run. Full run artifacts live in `research/` (untracked); 
 | Date | Corpus | Result | Method changed? |
 |------|--------|--------|-----------------|
 | 2026-07-28 | DeepWiki alternatives (design corpus 1, known ground truth) | Pass on all five checks: security outlier survived, Repowise vendor-labelled, Understand Anything judged on fit not popularity, critical unknown = bake-off, 640-word brief vs V5's 3,562 with zero cross-section repetition | No |
+| 2026-07-28 | AI SDR (held out, no prior synthesis, architecture/strategy shape) | Five self-checks pass. Step 5 exercised for the first time: 4 decision-changing claims opened (CRMArena-Pro stats, AI Act Art. 50 date, Rasa maintenance mode, Drift sunset) - all held, one resolved a direct report conflict (Rasa). Vendor-family dedup fired again (Gemini's Nexus/Ovox rankings cite the vendors' own blogs). Non-bake-off shape handled without forcing gates/candidate tables; brief ~890 words. Output in `research/ai-sdr/2026-07-28-ai-sdr-morning-briefing.md`. Morning test pending: the reader decides | No |
 
 ## Standing limitations
 
