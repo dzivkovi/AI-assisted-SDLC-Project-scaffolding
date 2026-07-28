@@ -61,6 +61,10 @@ Write long reports in appended parts rather than one write call, and end the fil
 
 Run the six-item self-check in `references/method.md` section 8. Then re-read the tail of the output file and confirm the Quality Control section and the `<!-- triangulate:complete -->` marker are present; if the file is incomplete, resume writing from where it stops rather than restarting. In chat, reply with two or three lines plus the file link - never narrate the report back.
 
+## Checking a run (optional)
+
+`references/evaluation.md` holds a corpus-independent rubric for judging a synthesis: use it to sanity-check your own output, to compare two runners on the same corpus, or to test a change to the method before adopting it. Pre-register the corpus-specific expectations before the run, not after.
+
 ## Acquiring the corpus (context, not a step)
 
 The reports can come from any deep-research surface: ChatGPT Deep Research, Gemini Deep Research, Claude Research, NotebookLM syntheses, or a colleague's written study. The skill only needs the files in one folder. Orchestrating the research runs themselves from inside the agent (dispatching the same question to multiple research services and collecting the results) is a natural extension; until those connectors exist, the user runs the researchers manually and drops the outputs here.

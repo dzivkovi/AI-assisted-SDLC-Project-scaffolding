@@ -58,6 +58,12 @@ Two sentences of intent, and the claim is that it captures most of V7's benefit 
 
 The correction that generated most of this: **model agreement measures prominence, not truth.** Three models can repeat one vendor page. Discovery support (3/3, 2/3, 1/3) and evidence status (verified, corroborated, single-source, disputed) are two independent axes, and a 1/3 verified claim can outrank a 3/3 unverified one.
 
+## Where this went
+
+These six prompts were distilled into one method, then into a runnable skill: [`claude-code/skills/triangulate/`](../../claude-code/skills/triangulate/SKILL.md). The skill is the thing to use now; this folder is the lineage behind it, kept because the failure modes are more transferable than the prompts.
+
+The line of descent: V6's analytical core (dual labels, source-family dedup) + V5's full report body + V7's verification discipline, minus the paste-into-a-chat ceremony, because the executor is an agent that can read the files and open the sources itself.
+
 ## Open questions for the next pass
 
 Listed as questions because reasonable people would answer them differently.
