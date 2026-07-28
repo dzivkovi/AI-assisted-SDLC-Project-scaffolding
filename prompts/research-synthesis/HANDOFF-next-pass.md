@@ -2,7 +2,7 @@
 
 Written 2026-07-27 for a fresh reviewer with no history in this thread. Everything referenced here is in this folder or named with a path.
 
-## The goal
+## The /goal
 
 **When I finish a cold-start research round, I want to get from three long reports to "I know what to do next, and I know which strange outlier deserves my afternoon" with as little ceremony as possible.**
 
@@ -25,7 +25,34 @@ Both halves are the point. Anything that optimizes one at the other's cost has m
 - **The overfitting table** in the README. Every version failed in a specific, documented way. That table is more useful than any of the prompts.
 - **Rankings from exactly one research corpus** (open-source DeepWiki alternatives). Treat these as weak evidence. The session that produced them flip-flopped between two winners within one conversation and then said so itself.
 - **The full development session**: `research/consolidated_chat-2026-07-27-chatgpt-Research_Agent_Comparison.md` (local only, 2011 lines). Read it if you want the reasoning behind a ranking; the README already carries the conclusions.
-- **A second corpus, unrun**: three reports in `~/Downloads` on evolving a knowledge assistant into an inbound AI sales agent. The OpenAI leg is not finished. This is the first chance to test anything against a topic that is not DeepWiki.
+- **Four real corpora**, inventoried below. Three are open to you; one is held out.
+
+## The corpora
+
+| # | Topic | Agent reports | Historical synthesis outputs | Role |
+|---|-------|---------------|------------------------------|------|
+| 1 | Open-source DeepWiki alternatives (Jul 2026) | claude, gemini, openai - `~/Dropbox/GAI/PROMPTING/DANIEL/DeepResearch/DeepWiki Alternatives/` | V5, V6, V8 outputs, plus the full grading session | Design corpus |
+| 2 | AI browser extensions (Aug 2025) | gemini2.5, gpt5, opus4.1 - `~/Dropbox/GAI/PROMPTING/DANIEL/Multi-AI Research/OSS ChatGPT Clones & AI Extensions/` | Synthesis v2, v3, v4, v5 - four generations against identical inputs | Design corpus |
+| 3 | Open-source ChatGPT clones (Aug-Sep 2025) | gemini2.5, gpt5, opus4.1 - same folder | Synthesis v5, v6 | Design corpus |
+| 4 | Knowledge assistant to inbound AI sales agent (Jul 2026) | `~/Downloads`, claude and gemini present, OpenAI leg unfinished | none | **Held out - do not open until the design is frozen** |
+
+Corpora 2 and 3 are the underused asset. They hold multiple synthesis outputs generated from the *same* three reports by *different* prompt generations. That is the only place where the evolution of the output can be observed directly rather than inferred from a critique. Corpus 1 is the richest in commentary and the most contaminated by it - every ranking in this folder came from it.
+
+Corpus 4 is deliberately different in shape: an architecture and evolution question, not a product bake-off. Three of the four corpora are "which tool should I pick," so a method tuned on them may quietly become a product-comparison method. Corpus 4 is where that shows up.
+
+## How to run this
+
+One session, two phases, with a hard commit point between them. The sequence matters more than the length.
+
+**Phase 1 - reason.** Read this folder, the six versions, the overfitting table, and design corpora 1 to 3. Work out what the method should be. Then **write it down and commit it to git before doing anything else.**
+
+**Phase 2 - test.** Only now open corpus 4 and run the method against it. Record what happened, including what you would want to change.
+
+The commit between phases is the whole point. Any post-test change to the design shows up in the diff, so "did this overfit to the test corpus?" stops being a judgment call and becomes something readable. V7 exists because a single run's postmortem got encoded into a universal framework, and nobody could see it happening. This makes that visible.
+
+Changing the design after Phase 2 is allowed. Changing it silently is not.
+
+If corpus 4's OpenAI leg is still missing, run it with two reports. A missing leg is a real operating condition and the method should survive it.
 
 ## Where I read this going, and why you should feel free to disagree
 
