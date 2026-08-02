@@ -1,3 +1,8 @@
+---
+description: Save session content as a numbered markdown note under work/<date>/
+model: sonnet
+---
+
 Please save content as a markdown file with a specific naming convention and structure. Follow these instructions carefully:
 
 ## CRITICAL: Check for user instructions FIRST!
