@@ -1,14 +1,40 @@
 ---
 description: Unattended overnight engineering loop for your own repos. Takes ONE issue or a LIST of tickets; each gets its own worktree, PR, and debrief; MERGES its own work on clean-green rebase after ce-code-review + the Codex peer pass. Never stalls mid-run - out-of-scope destructive actions are parked (never performed), ambiguity goes to the Codex proxy, and genuine human-only calls are collected into one end-of-run "Decisions" list with exact file:line references. Say "review mode" / "halt before merge" in the invocation to restore the old halt-for-morning-review behavior. PRs target your own origin, never upstream (use /ship-it for upstream forks).
 argument-hint: "[issue-number(s) | issue-url | empty for auto-pick | free-form description]"
+model: opus
 allowed-tools: [Bash, Read, Edit, Write, Skill, Agent, mcp__playwright__browser_navigate, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_snapshot, mcp__playwright__browser_close, mcp__playwright__browser_console_messages, mcp__playwright__browser_evaluate, mcp__playwright__browser_wait_for]
 ---
 
 I'm going to bed. I trust your judgment. Use the Compound Engineering (/ce-...) chain to fix this end to end overnight.
 
+> **Requires an Opus-capable subscription.** This command pins `model: opus` in its frontmatter (see rule 1.5) so an unattended run costs and reasons the same no matter which model your session happened to be on. If your plan or gateway does not offer Opus, change that one frontmatter line to a tier you do have - but change it deliberately rather than deleting it, because with no pin the orchestrator silently inherits the session tier.
+
 **Task source:** $ARGUMENTS
 
-If `$ARGUMENTS` is empty, run `gh issue list --assignee @me --state open --json number,title,labels --jq 'sort_by(.labels | map(.name) | contains(["priority:high"])) | reverse | .[0]'` to pick the highest-priority issue assigned to me. If a number or a LIST of numbers, treat as issue number(s) in the current repo. If a URL, follow it. If free-form text, search existing issues for a match before treating as a new spec.
+If a number or a LIST of numbers, treat as issue number(s) in the current repo. If a URL, follow it. If free-form text, search existing issues for a match before treating as a new spec.
+
+If `$ARGUMENTS` is empty, rank the open issues and take the top of the list:
+
+```bash
+ME=$(gh api user --jq .login)
+gh issue list --state open --limit 1000 --json number,title,labels,assignees \
+| jq --arg me "$ME" '
+[ .[]
+  # Mine or nobody'"'"'s. Never pick work someone else has already claimed.
+  | select((.assignees | length) == 0 or any(.assignees[]; .login == $me))
+  | . + {p: ([
+      ((.labels // [])[].name | ascii_downcase | capture("^(?:priority[/: _-]*)?p(?<n>[0-3])$") | .n | tonumber),
+      ((.labels // [])[].name | ascii_downcase | select(test("^(?:priority[/: _-]*)?(critical|urgent)$")) | 0),
+      ((.labels // [])[].name | ascii_downcase | select(test("^(?:priority[/: _-]*)?high$")) | 1),
+      ((.title // "")   | ascii_downcase | capture("^p(?<n>[0-3])[:.) ]") | .n | tonumber),
+      9 ] | min)} ]
+| sort_by(.p, .number)
+| .[0:3]'
+```
+
+It scores each issue by the LOWEST (most urgent) signal it carries, so it reads `priority/p1`, `P2`, `priority: high`, `critical`, and a bare `P0:` title prefix alike, and anything unlabelled sorts last at 9 rather than being dropped. Within a band it is oldest-first. Show me the top 3 and start on the first; if the list comes back empty, say so and stop rather than inventing work.
+
+Two things this deliberately does NOT do. It does **not** filter `--assignee @me` at the CLI: on a solo repo issues are typically unassigned, so that filter silently returns an empty set and the run dies at step one - instead it accepts unassigned OR mine and skips tickets someone else has claimed, which is the behavior you actually want on a shared repo too. And the label patterns are **anchored**, so a label like `group3` or `notp0` cannot be misread as a priority.
 
 ## The unattended contract (default mode)
 
@@ -17,13 +43,23 @@ This run is UNATTENDED end to end. Never halt the run to wait for me - not betwe
 - **Codex is my standing proxy.** For any judgment call: self-resolve from specs/corpus/code first; if still ambiguous, get `codex:codex-rescue`'s position and adopt any joint position. Escalate to me ONLY on genuine Claude-Codex non-consensus, or on a true taste/business/validation call an AI must not make. Per the TODO(HUMAN) policy (project CLAUDE.md): that tag is reserved for human-taste items that must START from a human - never for "the AIs couldn't decide."
 - **Park, don't stall; park, don't perform.** When a ticket cannot proceed safely (a missing credential Codex can't route around, a destructive action outside this run's own artifacts, a genuine non-consensus), QUARANTINE that ticket: leave its branch/PR in a safe un-merged state, record a decision entry, and move to the next ticket. One stuck ticket never costs the rest of the night.
 - **Decisions for me, at the end - one list, not buried tags.** Collect every parked item and every genuine human-only call into a single `## Decisions for <operator>` section of the final summary AND the closing chat message: exact `file:line`, the PR, both positions where there was disagreement, and your recommendation. I act from one highlighted list in the morning; I never hunt for markers scattered mid-diff.
+- **Every Decisions item must be decision-SHAPED, not a statement.** The test: each item names (a) the choice as options I can pick between, (b) what changes if I pick differently (the revert point or alternative path), and (c) your recommendation. "I did X, flag if you disagree" is an FYI, not a decision - FYIs go in the debrief body, never in the Decisions list. And for any action only the human may execute (deleting worktrees/branches/files, revoking credentials, anything outside the AI's write-permissions): print the EXACT commands ready to copy-paste, never just describe them. *Why (2026-07-12):* a night summary listed four "decisions" of which zero were actual choices - the operator read them, found nothing to decide, and had to ask what was being asked; the cleanup commands he must run himself were missing entirely.
 - **Review mode (opt-in):** if my invocation says "review mode" or "halt before merge", restore the legacy behavior - open PRs, do NOT merge, leave a ready-for-review comment with the smoke-test reference on each.
 
 ## Rules
 
 1. **Full CE loop, single line trust grant.** Run brainstorm → plan → TDD → impl → validation → self-review → fix as the CE chain handles it. Do not orchestrate step-by-step from this prompt; trust the skills.
 
+1.5. **Model routing - spend the premium tier on judgment, not on typing.** The `/ce-...` chain's reviewer personas keep their own pins; do not override them. For agents YOU dispatch during a ticket, route by what the task actually demands:
+   - **Cheaper tier (pass `model: sonnet` explicitly on the `Agent` call):** work that is precise-execution against an already-written contract - scaffolding from an existing pattern, writing tests from a test contract stated in the issue, mechanical refactors, boilerplate, debrief/summary drafting, running and reporting a command's output. If the issue already says what "correct" is, an agent only has to hit it. **Tests are the sharp edge here:** a test is an executable spec, so a cheap tier writing one against an *ambiguous* issue can encode the wrong interpretation and every later implementer inherits it. Only delegate tests once the contract is unambiguous - if the issue does not state expected behavior precisely, normalize it on the session model FIRST (write the contract into the plan), then delegate typing it up.
+   - **Session model (no override):** orchestration judgment - merge vs park, the Gate 2 scope guard, the Saint-Exupery filter on review findings, decision-shaping for the morning list, and any call where "correct" is still being decided rather than executed.
+   - **Never route to a cheaper tier:** the merge/park decision itself, the destructive-action scope guard, or the final Decisions list. A wrong call there costs more than the whole night's token savings.
+
+   Routing is only real when it is structural - an explicit `model:` argument on the `Agent` call, or a `model:` pin in frontmatter. An intention stated in the run prompt is not routing: with no explicit argument the agent silently inherits the session tier, whatever that happens to be. That inheritance is why this command pins `model: opus` in its own frontmatter - an overnight loop should cost and reason the same whether you happened to launch it from a cheap tier or an expensive long-context one, and the orchestrator's context grows across every ticket in the batch, so it is the single biggest lever on the night's bill. Change that pin if you want a different orchestrator tier; do not remove it and rely on remembering to set the session model first. State the split you used in the night summary so the next run can audit it.
+
 2. **GATE 1 — real-input smoke test before declaring done.** Run the feature on real input. Capture pre-fix vs post-fix output as a section in the debrief. Check validation commands' EXIT CODES directly - never through a pipe (a `| tail` masks a red exit). Before smoking in a fresh worktree, check the project CLAUDE.md for worktree traps (gitignored assets - corpora, fixtures, .env - that must be copied in first). If an input is genuinely missing and Codex cannot route around it: do NOT halt - park the ticket with a decision entry and continue to the next.
+
+   **Whole-system smoke, not feature-local smoke - where the project HAS a whole system.** This whole paragraph is conditional on the project defining a smoke entrypoint (a `scripts/smoke.py`, `make smoke`, or a "Definition of done" command in project CLAUDE.md). Where one exists, Gate 1 means running THAT - the full suite against the DEPLOYED system after the merge/deploy step, never a hand-picked subset - and a feature with a runtime surface must ship its own e2e suite in whatever location that entrypoint auto-discovers (e.g. `scripts/e2e_*.py`), so system coverage grows with the feature list instead of lagging it. Local tests green + deployed smoke unrun = NOT done. Where the project has NO smoke entrypoint and no deploy step (a library, a CLI, a plugin), do not invent one inside an unrelated ticket: Gate 1 reverts to its base meaning - run the changed behavior on real input and show pre-fix vs post-fix. Building the missing harness is its own ticket, not silent scope added to this one. Either way the debrief must record WHICH entrypoint you resolved to, or "none found" plus where you looked - otherwise "no smoke entrypoint" is indistinguishable from "did not check". *Why (2026-07-16):* branded-pptx merged with 7 green local tests and zero deployed runs; the owner found the gap in production the next morning.
 
 2.5. **GATE 1.5 — visual smoke test for any UI / dashboard / rendered-asset surface.** If the change adds or modifies a web-rendered surface OR a rendered image (HTML page, dashboard, frontend, served content, OG/social image, chart, logo/mark), launch it in headless Playwright via `mcp__playwright__browser_navigate`, capture an accessibility snapshot via `mcp__playwright__browser_snapshot` (preferred over screenshot for assertions), and assert:
    - (a) page loads with no errors-level entries from `mcp__playwright__browser_console_messages`;
@@ -43,6 +79,10 @@ This run is UNATTENDED end to end. Never halt the run to wait for me - not betwe
    **Scope limit (read this):** this MoE pass is the **code layer**. Codex (and the `/ce-...` personas) read the *diff text*, not pixels — they cannot see a clipped logo, a broken layout, an overflowing card, or a mis-coloured chart. A valid `viewBox`/CSS value that renders wrong looks fine in the diff. Rendered-visual correctness is **Gate 1.5's job** (rule 2.5b geometry check + 2.5d fresh-eye visual review), which is the *visual* analog of this code MoE. Run both; they cover different layers, and a green code review says nothing about whether the picture looks right.
 
 5. **Premise-dependent claims with falsifiers.** In the PR body and debrief, label any claim that depends on an unverified premise. State the premise and what would falsify it. Overnight work can't probe back-and-forth, so this gives morning-me a clean review surface.
+
+   **Closes discipline - a premise-dependent claim forbids "Closes #N".** A PR body may carry `Closes #N` ONLY when every acceptance criterion of #N is live-proven in this run (Gate 1 on the deployed system). If ANY premise-dependent claim touching #N's acceptance remains unverified, write `Refs #N` instead, leave the ticket open, and add a decision entry naming what would close it. A documented caveat inside a closed ticket is a lie the tracker tells the owner. *Why (2026-07-16):* PR #15 documented "runs on serverless" as an unverified premise AND said "Closes #2" - the owner read the closed ticket as shipped and discovered otherwise in production.
+
+   **Every deferred close needs a way back, or it becomes backlog.** A rule that only says when NOT to close is a ratchet: tickets accumulate in a state nobody owns. So whenever you write `Refs #N` instead of `Closes #N`, also label #N `awaiting-verification` (create the label if the repo lacks it) and state in the comment the ONE check that would close it. Then at the START of every run, before touching the batch, list `awaiting-verification` issues and try to discharge them: if the premise is now verifiable in this repo, verify it, REMOVE the label and close the ticket; if it is not, leave it and say so in the night summary. Bound this so it cannot eat the night: **at most 15 minutes and only the oldest 5**, then move on to the batch regardless. Apply the label only where the blocking premise is real and stated - a label on everything is a label on nothing, and an unbounded sweep just re-litigates the same queue every run.
 
 6. **Commit + push + PR against `origin`** — the repo I own. Never push to or PR against `upstream` even if it exists. Branch off origin's default branch in an isolated worktree (let `/ce-worktree` decide name and location).
 
