@@ -45,6 +45,21 @@ These were early, pre-publication attempts to reverse-engineer the Compound Engi
 **Quality & Security:**
 - `/guardrail` - Confidentiality guardrail review (v2.6) - see [dedicated section below](#confidentiality-guardrail)
 
+<!-- provenance: authored 2026-08-13 in a video-intel working session; origin trail in the author's private cross-project ledger -->
+## Why the command files carry "*Why:*" paragraphs
+
+If you read a command like `dark-factory.md`, you will notice that some rules end with a dated paragraph like `*Why (2026-07-16):* PR #15 said "Closes #2" on an unverified premise - the owner read the closed ticket as shipped and discovered otherwise in production.` That is deliberate, and it is the opposite of clutter. Four reasons:
+
+1. **Git history is invisible to the agent at runtime.** When an agent applies a rule at 2am, the only thing in its context is the command file. Commit messages are not loaded. Moving the "why" to a commit message does not archive it - it deletes it from the only place the runtime can see.
+
+2. **A bare rule invites rationalization; a rule with a consequence resists it.** "Never write `Closes` on unverified premises" competes against in-context pressure ("this ticket looks done, closing feels tidy"). A one-sentence story of the real failure makes the exception expensive for the model to talk itself into.
+
+3. **Judgment rules need worked examples on both sides.** These files have had rules misapplied in *both* directions: one incident closed a ticket that was not actually done, and a later run left five finished, dual-review-approved tickets open "awaiting confirmation" because the rule only carried the first story. A rule with a failure example on each side defines the boundary far better than any abstract criterion - so when a rule gets over-corrected, the fix is a second dated "*Why*", not deleting the first.
+
+4. **Chesterton's fence for future editors.** A rule with no visible reason looks arbitrary, and arbitrary-looking rules are exactly what the next "simplify this bloated file" pass deletes - whether that pass is a human or an agent. The date plus incident tells the editor what breaks if the fence comes down.
+
+The honest limit: this only earns its tokens on **judgment rules** - rules the agent must interpret at application time. Mechanical rules (anything checkable by a grep, a test, or a linter) do not need persuading, they need the check; their history can live in git. And when a judgment rule eventually graduates into code plus a test, its "*Why*" can shrink to a pointer. Density is a real cost, so the discipline is: keep the story where the rule can be bent, drop it where the rule can be verified.
+
 ## Shell Utilities (`tools/`)
 
 ### `cs` — Claude Session name mapper
