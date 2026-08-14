@@ -12,11 +12,11 @@ This repository is the master "factory" for all new **Magma Inc.** projects. It 
 
 This system is designed so that the **AI Assistant Kit** (the tools) operates *on* the **Project Template** (the code), using **Project Visibility** for tracking and transparency, while remaining invisible to the client.
 
-## Flagship: `/dark-factory` — Overnight Autonomous Engineering
+## Flagship: `/dark-factory` - Overnight Autonomous Engineering
 
-Hand it a list of GitHub issues before bed; wake up to merged PRs. `/dark-factory` runs each ticket through the full [Compound Engineering](https://every.to/guides/compound-engineering) chain — plan, TDD, implementation, self-review — plus a non-Anthropic (Codex) peer review and a visual smoke gate, then **merges its own work** on clean-green instead of stalling for a human at 2am. Unattended is not unlimited: destructive actions outside its own branches are always parked, never performed, and everything that genuinely needs you lands in one end-of-run `## Decisions` list instead of scattered halt points. Say "review mode" / "halt before merge" in the invocation to fall back to opening PRs without merging them.
+Hand it a list of GitHub issues before bed; wake up to merged PRs. `/dark-factory` runs each ticket through the full [Compound Engineering](https://every.to/guides/compound-engineering) chain - plan, TDD, implementation, self-review - plus a non-Anthropic (Codex) peer review and a visual smoke gate, then **merges its own work** on clean-green instead of stalling for a human at 2am. Unattended is not unlimited: destructive actions outside its own branches are always parked, never performed, and everything that genuinely needs you lands in one end-of-run `## Decisions` list instead of scattered halt points. Say "review mode" / "halt before merge" in the invocation to fall back to opening PRs without merging them.
 
-Proof, not a promise: [PR #41 on video-intel](https://github.com/dzivkovi/video-intel/pull/41) — 8 commits, 653 tests passing (49 new), a real-data smoke test matching the plan's estimate, and a multi-agent review that surfaced 2 polish items overnight, both applied cleanly. Ten minutes of human review, squash, merge.
+Proof, not a promise: [PR #41 on video-intel](https://github.com/dzivkovi/video-intel/pull/41) - 8 commits, 653 tests passing (49 new), a real-data smoke test matching the plan's estimate, and a multi-agent review that surfaced 2 polish items overnight, both applied cleanly. Ten minutes of human review, squash, merge.
 
 Read the full story: [**"Software dark factories stopped being a fairy tale for me"**](https://www.linkedin.com/feed/update/urn:li:activity:7453892609665810434/) (LinkedIn).
 
@@ -56,7 +56,52 @@ git commit -m "Initial scaffold"
 
 This step supports an issue-driven [Compound Engineering](https://every.to/guides/compound-engineering) workflow: each unit of work is tracked on a GitHub Project board for transparency. (This repo's original `/issue` and `/work` commands that drove the board are now superseded by Compound Engineering's `/ce-...` commands; set the board up if you want that tracking, skip it if you don't.)
 
+> **Re-verified against GitHub on 2026-08-14.** Board creation and column setup are fully scriptable now, which they were not when this was first written. Only "Enable Automation" below still requires the web UI, and that limitation looks permanent: GitHub ships a `deleteProjectV2Workflow` mutation and no create or update counterpart.
+
+**Prerequisite:** `gh auth status` must list the **`project`** scope alongside `repo`. Without it every command in this section fails, and not always with an obvious message. Add it with `gh auth refresh -s project`.
+
 #### Creating Your Kanban Board
+
+**Using CLI (Recommended):**
+
+```bash
+# 1. Create the project. Keep the returned "id" (PVT_...) and "number".
+gh project create --owner YOUR-USERNAME --title "ProjectName Development" --format json
+
+# 2. Read back the Status field id, its current options, and the view id.
+gh api graphql -f query='
+query { node(id: "PROJECT_ID") { ... on ProjectV2 {
+  fields(first: 20) { nodes {
+    ... on ProjectV2SingleSelectField { id name options { id name } } } }
+  views(first: 5) { nodes { id name layout number } } } } }'
+```
+
+**Columns are options on a single-select `Status` field, not free-standing columns**, and a project created this way already ships with **Todo / In Progress / Done**. So "adding" the four you want leaves you with five and a stray `Todo`. Replace the whole set in one mutation instead. `singleSelectOptions` is a full replacement rather than a merge, and `description` is required, not decorative:
+
+```bash
+gh api graphql -f query='
+mutation { updateProjectV2Field(input: {
+  fieldId: "STATUS_FIELD_ID"
+  singleSelectOptions: [
+    {name: "Backlog",     color: GRAY,   description: "Items to be worked on in the future"},
+    {name: "In Progress", color: YELLOW, description: "Current work in development"},
+    {name: "In Review",   color: PURPLE, description: "Pull requests awaiting feedback"},
+    {name: "Done",        color: GREEN,  description: "Completed work"}
+  ]}) { projectV2Field { ... on ProjectV2SingleSelectField { options { id name } } } } }'
+```
+
+`gh project create` always produces a **table** view and accepts no template flag, so convert it. This replaces picking the "Board" template by hand:
+
+```bash
+gh api graphql -f query='
+mutation { updateProjectV2View(input: {
+  viewId: "VIEW_ID", name: "Board", layout: BOARD_LAYOUT
+}) { projectV2View { name layout } } }'
+```
+
+A board view groups by `Status` on its own, so those four options become the four columns in that order.
+
+**Using Web UI (Alternative):**
 
 1. **Access Project Creation**: Navigate to your GitHub projects tab, then select "New project" and choose the "Board" template
 2. **Name Your Board**: Title it appropriately (e.g., "ProjectName Development" or "Compound Engineering in Action")
@@ -65,6 +110,7 @@ This step supports an issue-driven [Compound Engineering](https://every.to/guide
    - **In Progress**: Current work in development
    - **In Review**: Pull requests awaiting feedback
    - **Done**: Completed work
+   - The board opens with a default set of columns already present, so rename and delete your way to the four above rather than only adding
    - To add columns, click the "+" button after the last column and select "New Column"
    - Reorder columns by dragging them
    - Edit column details through the "..." menu
@@ -76,6 +122,10 @@ This step supports an issue-driven [Compound Engineering](https://every.to/guide
 # From inside your repository directory
 gh project list --owner YOUR-USERNAME
 gh project link PROJECT-NUMBER
+
+# Naming both explicitly is the form verified on 2026-08-14, and it works
+# from any directory rather than depending on the current repo:
+gh project link PROJECT-NUMBER --owner YOUR-USERNAME --repo YOUR-REPO
 ```
 
 **Using Web UI (Alternative):**
@@ -85,9 +135,13 @@ gh project link PROJECT-NUMBER
 
 #### Enable Automation (Critical)
 
+**This is the one step with no CLI path.** GitHub's GraphQL API can *read* workflow state and can delete a workflow, but there is no mutation to create or update one, so this must be done in a logged-in browser. Both workflows already exist on a new project; they are simply switched off.
+
 Navigate to your project's workflow settings:
 - **Direct URL:** `https://github.com/users/YOUR-USERNAME/projects/PROJECT-NUMBER/workflows`
 - Or: Access the project menu (top right "..."), select "Workflows"
+
+> **A 404 here means you are signed out, not that the URL changed.** A private project is invisible to an anonymous visitor, and GitHub serves its generic "Page not found" rather than a login prompt. This is easy to misread as a moved endpoint and waste time hunting for a replacement. There is no `/settings/workflows` variant. It also bites when driving a separate automation browser profile, which has its own cookie jar and is usually not signed in.
 
 Configure these two essential workflows:
 
@@ -103,17 +157,32 @@ Configure these two essential workflows:
    - Set the action to: **"Set status to Done"**
    - Save the workflow
 
+Two details that trip people up in the current UI:
+
+- The save control reads **"Save and turn on workflow"** and stays **disabled until you pick a value**. Choosing the status is what arms it, so there is no separate enable toggle to hunt for.
+- The sidebar's **"Workflows (N enabled)" counter lags by a page load**, so it is not confirmation. Verify from the API instead, where `enabled: true` is the only reliable signal:
+
+```bash
+gh api graphql -f query='
+query { node(id: "PROJECT_ID") { ... on ProjectV2 {
+  workflows(first: 30) { nodes { name number enabled } } } } }'
+```
+
 **Reference screenshots:**
 - [Workflows overview](assets/github-workflows-overview.png)
 - [Item closed configuration](assets/github-workflows-item-closed.png)
 
 #### Optional: Make Project Public
 
+Projects are created **private** by default, including via `gh project create`.
+
 For public repositories:
 - Navigate to project Settings
 - Locate the "Danger zone" section
 - Adjust visibility settings
 - Benefit: public projects enable community visibility into your workflow
+
+**If the linked repository is private, think before flipping this.** A project board carries issue titles, and the board is a separate object from the repo with its own visibility setting. Confirm what a signed-out visitor actually sees before making a board public over private work, rather than assuming the repo's privacy covers it.
 
 #### Test Your Setup
 
@@ -152,6 +221,46 @@ gh project item-add PROJECT-NUMBER --owner YOUR-USERNAME --url https://github.co
 **Important:** The automation triggers when an issue is **added to** the project, not when it's created. You must explicitly add the issue to the project for the workflow to activate.
 
 **Common convention:** Many developers use titles like "Hello World", "Test Issue", or "Scaffolding Test" for their first issue. The key is making it clearly identifiable as a test that can be safely closed.
+
+#### Retrofitting a Board onto an Existing Backlog
+
+The steps above assume a fresh project with one test issue. Putting a board over a repo that **already** has a hundred-plus issues is a different job, and it has two traps that cost real time on 2026-08-14.
+
+Adding an item takes two calls, and there is no bulk endpoint:
+
+```bash
+ITEM_ID=$(gh project item-add PROJECT-NUMBER --owner YOUR-USERNAME --url "ISSUE_URL" --format json | jq -r .id)
+gh project item-edit --id "$ITEM_ID" --project-id "PROJECT_ID" \
+  --field-id "STATUS_FIELD_ID" --single-select-option-id "OPTION_ID"
+```
+
+`item-add` is idempotent, returning the existing item rather than duplicating, so a failed run is safe to re-run.
+
+**Trap 1: enable the automation AFTER the import, not before.** The "Item added to project" workflow fires **asynchronously** on every add. If it is live while you bulk-import, it races your explicit `item-edit`: a closed issue can land in `Done` and get silently reset to `Backlog` a moment later. Import first, switch the workflows on last. If the order slips, re-verify rather than trusting the counts, and repair anything closed that is sitting in `Backlog`.
+
+**Trap 2: the GraphQL rate limit will end your run, and it fails misleadingly.** Projects are a GraphQL-only surface with a **5,000 point per hour** budget and no REST fallback. A 169-item import exhausted the entire hourly budget and stranded the last 18 items. Once throttled, `gh project` commands return **empty output**, which reads exactly like "the board is empty" instead of "you are being throttled".
+
+Check the budget before and during a bulk run. This endpoint is REST and does not itself consume GraphQL points:
+
+```bash
+gh api rate_limit -q '.resources.graphql'   # {"limit":5000,"remaining":N,"reset":<epoch>}
+date -d @RESET_EPOCH                        # when it recovers
+```
+
+Two things burn the budget faster than the arithmetic suggests:
+
+- **`item-add` and `item-edit` are not one point each.** `gh` resolves the project, its fields, and the item on every call.
+- **Progress polling is the bigger cost.** `gh project item-list --limit 400` paginates the entire board and costs far more than a mutation, so polling it in a loop can outweigh the import itself. Fetch it **once** into a variable and derive every figure from that:
+
+```bash
+J=$(gh project item-list PROJECT-NUMBER --owner YOUR-USERNAME --limit 400 --format json)
+echo "$J" | jq -r '[.items[].status] | group_by(.) | map({status:.[0], n:length}) | .[]'
+echo "$J" | jq '.items|length'
+```
+
+If you do get throttled, stop every watcher immediately. Otherwise they re-consume the fresh budget the instant it resets, ahead of the retry that actually needs it.
+
+**Map statuses honestly.** Open issues to `Backlog`, open pull requests to `In Review`, and issues closed as `COMPLETED` to `Done`. Filter with `select(.stateReason=="COMPLETED")` so that issues closed as **not planned** are left off the board entirely: listing abandoned work as `Done` overstates what shipped, and it is the first thing a reviewer notices. Expect `In Progress` to come out empty on a fresh import, because nothing in an imported backlog is genuinely mid-flight. Move those cards by hand.
 
 ## What's Inside
 
@@ -270,7 +379,7 @@ When you copy the `python/` template to start a new project, ADRs come with it -
 
 **NEW:** Standalone prompts for research, planning, and quality assurance phases.
 
-These aren't scaffolding-specific—they're general-purpose prompts I've battle-tested throughout 2025 for AI-assisted decision making. Use them with any reasoning AI (GPT, Gemini, Claude) before or during development.
+These aren't scaffolding-specific: they're general-purpose prompts I've battle-tested throughout 2025 for AI-assisted decision making. Use them with any reasoning AI (GPT, Gemini, Claude) before or during development.
 
 #### What's Included
 
