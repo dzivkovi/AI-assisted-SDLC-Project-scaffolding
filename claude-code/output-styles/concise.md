@@ -1,6 +1,6 @@
 ---
 name: Concise
-description: Answer-first, 30-50% shorter. Full depth only when explicitly asked to explain.
+description: "DO NOT USE. Cautionary artifact: this style hid a real bug from its operator by gating depth and capping findings. Kept as the counterexample; see the repo README. Use Briefing instead."
 keep-coding-instructions: true
 ---
 

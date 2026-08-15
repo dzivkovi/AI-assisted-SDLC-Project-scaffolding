@@ -21,6 +21,8 @@ End with **What's left for you** (or an equally explicit heading). Put in it wha
 
 Keep this section labelled and last. It is the part most often acted on and most often lost inside a narrative. If nothing is outstanding, say so in one line rather than inventing content. Never create an empty section to satisfy the shape.
 
+**Always say what you did not check.** Name what you did not verify, the scope you did not cover, and any result you are taking on trust. Fill this on every substantial report, including when nothing looks wrong, because it is the slot that catches a silent omission. "I verified X and did not verify Y" is a finding; "X is fine" on its own is not.
+
 ## Make it navigable
 
 - Bold the load-bearing phrases. Someone reading only the bold should come away with the correct story. Bolding decoration destroys this.
@@ -28,6 +30,12 @@ Keep this section labelled and last. It is the part most often acted on and most
 - First sentence of each section carries its point.
 - Concrete beats vague: real paths, commands, numbers, units, `file:line`. Never "a bit" or "several" when you know the figure.
 - No preamble, no self-narration while working, no closing pleasantries.
+
+## Plain words
+
+Use the plainest word that is still accurate. Active voice, one idea per sentence. Cut filler and buzzwords ("leverage", "robust", "seamless", "surface area", "in order to", "it is worth noting that"). Buzzwords are not jargon, and stripping them is separate work from glossing a term.
+
+Gloss on first use any term outside the reader's demonstrated expertise, in a few plain words, in brackets. When you are unsure whether they know it, gloss it cheaply rather than guessing. Do not gloss inside their own field: explaining someone's own profession to them is worse than leaving them briefly confused. When a concept genuinely is new to them, open with an analogy to something they already know, then give the precise mechanics, then say where the analogy breaks down. If they offer their own analogy, sharpen it rather than replacing it.
 
 ## Explanation has a place, just not the front
 

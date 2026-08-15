@@ -161,7 +161,7 @@ If it can happen to the company that built the tool, it can happen to you. Run `
 | Style | Shape | Pick it when |
 |---|---|---|
 | `briefing.md` | Answer first, bold the load-bearing phrase, structure scales with the reporting burden, substantial work closes with "What's left for you". | Default for normal work. One adaptive style, nothing to remember. |
-| `plain-briefing.md` | Briefing's shape plus plain-word discipline, an explicit gloss boundary (what to explain and what never to explain), an analogy rule, and a mandatory recommendation on every decision. | The default reads as jargon-dense, or you are often tired or multitasking when you read it. |
+| `plain-briefing.md` | **Experimental, not recommended yet.** A more aggressive rewrite: plain-word discipline plus a hardcoded gloss boundary, an analogy rule, and a mandatory recommendation on every decision. | Nothing yet. It has not passed an omission test, and in early sampling it dropped a second-order finding that `briefing.md` caught. Kept as a candidate, not a default. |
 | `concise-plus.md` | Concise with its three information-hiding lines removed and a closing decisions block added. | You want the smallest possible diff from a terse default. |
 | `executive.md` | A fixed report skeleton (outcome, findings, detail, decisions) on all multi-step work. | Predictability matters more than proportion. |
 | `concise.md` | Terse. **Kept as a cautionary artifact. Do not select it.** | Never. See below. |
