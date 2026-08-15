@@ -5,6 +5,7 @@ This directory contains custom slash commands and configuration for Claude Code.
 ## Directory Structure
 
 - **`commands/`** - Slash commands (each `.md` file defines a reusable command)
+- **`output-styles/`** - Output styles: system-prompt-level presets for how Claude reports back to you
 - **`personas/`** - Communication style presets for different team dynamics
 - **`tools/`** - Shell utilities for working with Claude Code
 - **`settings.json`** - Claude Code permissions and configuration
@@ -153,9 +154,42 @@ If it can happen to the company that built the tool, it can happen to you. Run `
 /guardrail full                     # Full workspace audit, generic
 ```
 
+## Output Styles
+
+`output-styles/` holds Claude Code **output styles**: presets that change how Claude reports back to you. An output style is written into the core system prompt and re-injected as a reminder during the session, so it holds better over a long run than the same rules placed in `CLAUDE.md`, which is loaded once at the top.
+
+| Style | Shape | Pick it when |
+|---|---|---|
+| `briefing.md` | Answer first, bold the load-bearing phrase, structure scales with the reporting burden, substantial work closes with "What's left for you". | Default for normal work. One adaptive style, nothing to remember. |
+| `plain-briefing.md` | Briefing's shape plus plain-word discipline, an explicit gloss boundary (what to explain and what never to explain), an analogy rule, and a mandatory recommendation on every decision. | The default reads as jargon-dense, or you are often tired or multitasking when you read it. |
+| `concise-plus.md` | Concise with its three information-hiding lines removed and a closing decisions block added. | You want the smallest possible diff from a terse default. |
+| `executive.md` | A fixed report skeleton (outcome, findings, detail, decisions) on all multi-step work. | Predictability matters more than proportion. |
+| `concise.md` | Terse. **Kept as a cautionary artifact. Do not select it.** | Never. See below. |
+
+Install by copying into `~/.claude/output-styles/`, then either pick the style from `/config` or set `"outputStyle": "<the name field>"` in `~/.claude/settings.json`. Styles are read at session start and prompt-cached, so restart before judging any change.
+
+### The lesson `concise.md` records
+
+`concise.md` is kept here as a warning, not a recommendation. Three of its lines cause information loss rather than brevity:
+
+- *"give a high-level summary unless an in-depth explanation is specifically requested"* gates depth, forcing you to re-prompt for facts the agent had already found.
+- *"Cap lists at 5 items"* is a hard cap on **findings**, which quietly encourages omission when there are seven.
+- *"no recap of what you just did"* deletes the end-of-run handoff, which is the most-acted-on part of an unattended run's report.
+
+What it produced in practice: an overnight automated run found a genuine bug, wrote the affected artifact to disk marked complete, and reported the problem as a clause inside a paragraph with no recommendation attached. It surfaced only when the operator asked a follow-up question the next morning. **The information had been found. The response shape hid it.**
+
+The generalisable rule, and the reason the other styles exist: **optimise for retrieval cost, not word count.** A response can be long and instantly navigable, or short and completely opaque, and a word cap treats those as the same thing. The two ways a report fails a reader are not symmetric:
+
+| Failure | Cost | Recoverable? |
+|---|---|---|
+| Too much to scan. The fact is present but buried in equal-weight prose. | Attention. The reader has to hunt. | Yes. Annoying, but it is on the page. |
+| Too little surfaced. The fact never appears. | Decisions, bugs, money. The reader believes the work is complete. | **No. The reader does not know to ask.** |
+
+A second, subtler trap: an over-specified style degrades output. Long style guides compete with the task for the model's attention, and mandatory section skeletons invite invented content to fill empty slots. Keep a style to a handful of load-bearing rules.
+
 ## Communication Personas
 
-The `personas/` directory contains communication style presets that customize Claude's output for different team dynamics.
+The `personas/` directory contains communication style presets that customize Claude's output for different team dynamics. Personas predate output styles and solve an adjacent problem: a persona sets the register for an audience (a client, an AI-skeptical team), while an output style sets the information architecture for you, the operator.
 
 ### Available Personas
 
