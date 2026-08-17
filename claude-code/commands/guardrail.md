@@ -13,7 +13,7 @@ Parse `$ARGUMENTS` as follows:
 
 If any information is missing, use AskUserQuestion to prompt before scanning:
 - If scope was not explicitly provided, ask: "Which scope should this review use?" with options for delta (recommended), full, and git.
-- If no client context was provided, ask: "Which client should this review target?" with options "No specific client (Recommended)" and "Mastercard". The user can type any other client name via the built-in Other option.
+- If no client context was provided, ask: "Which client should this review target?" with the option "No specific client (Recommended)". The user types the client name via the built-in Other option. Do not hardcode a client name into this prompt: this file is public, and a named default would itself disclose an engagement, which is the exact failure the command exists to prevent.
 - Then proceed using the answers as if they had been passed as command-line arguments. When a client is named, automatically include common abbreviations and casing variants in the search.
 
 Modes:
@@ -114,7 +114,7 @@ If scope is `git`:
   - present in packaged or release artifacts
   - referenced from other tracked files, commit messages, or documentation
 - Focus on whether confidential material crossed or nearly crossed repository boundaries, not just whether it exists locally.
-- For gitignored files: verify they are protected and were never committed. Do not read their full content — detailed content inspection is `full` scope's job. However, if a client is targeted, do a lightweight grep for the client name across gitignored files. Report as a single summary line (e.g., "3 gitignored files contain Mastercard references — gitignore is the sole barrier"), not per-file flags with line numbers.
+- For gitignored files: verify they are protected and were never committed. Do not read their full content — detailed content inspection is `full` scope's job. However, if a client is targeted, do a lightweight grep for the client name across gitignored files. Report as a single summary line (e.g., "3 gitignored files contain <client> references, gitignore is the sole barrier"), not per-file flags with line numbers.
 - For files that look sensitive but are NOT gitignored (e.g., `.env`, credentials, conversation exports, config with secrets): flag as a gitignore gap. This is the highest-priority finding in `git` scope.
 
 Output:

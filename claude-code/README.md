@@ -105,7 +105,7 @@ Type any command in a Claude Code session. For example:
 - `/notebook-review` - Review Jupyter notebooks (Anthropic command)
 - `/dark-factory 42` - Hand off issue #42 overnight; wake up to a merge-ready PR
 - `/guardrail` - Interactive: prompts for scope + client
-- `/guardrail git Mastercard` - Fast: skip prompts, targeted scan
+- `/guardrail git AcmeBank` - Fast: skip prompts, targeted scan
 - `/learnings` - Save refined learnings from current conversation
 
 ## Confidentiality Guardrail
@@ -137,7 +137,7 @@ If it can happen to the company that built the tool, it can happen to you. Run `
 | Mode | Invocation | Behavior |
 |------|-----------|----------|
 | Generic | `/guardrail` then select "No specific client" | Scans for anything that looks non-public: project codenames, staff names, internal workflows, credentials |
-| Client-targeted | `/guardrail git Mastercard` or type client name via "Other" | Actively searches for client name, abbreviations, and domain-adjacent terms (e.g., PCI, interchange for a payments client) |
+| Client-targeted | `/guardrail git AcmeBank` or type the client name via "Other" | Actively searches for client name, abbreviations, and domain-adjacent terms (e.g., PCI, interchange for a payments client) |
 
 **What it catches:**
 - Client employee names, internal project codenames, engagement scope details
@@ -160,7 +160,7 @@ If it can happen to the company that built the tool, it can happen to you. Run `
 
 # Fast targeted (skip prompts)
 /guardrail delta                    # Pre-commit check, generic
-/guardrail git Mastercard           # Boundary audit, client-targeted
+/guardrail git AcmeBank             # Boundary audit, client-targeted
 /guardrail full                     # Full workspace audit, generic
 ```
 
