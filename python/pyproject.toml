@@ -20,7 +20,10 @@ dev = ["ruff", "pytest", "pytest-cov"]
 where = ["src"]
 
 [tool.ruff]
-line-length = 100
+# 120 to match specs/preferences.md, which is the file an AI assistant reads
+# first on this project. Two different line lengths in one scaffold means the
+# assistant and the linter disagree, and the assistant loses every time.
+line-length = 120
 target-version = "py312"
 
 [tool.ruff.lint]
