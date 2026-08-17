@@ -1,13 +1,17 @@
 # Useful Prompts
 
-Standalone prompts not yet graduated into Claude Code commands or agents.
+Four prompts that predate slash commands being common and predate skills existing at all. In 2025 this was the whole toolchain: text you pasted into a chat window, refined by using it on decisions that mattered. They were published here in November 2025 after a year of that.
+
+They still work, unchanged, with any reasoning model. That is most of why they are worth keeping. A prompt that survives three generations of tooling was solving a real problem rather than a tooling gap.
+
+**The through-line worth noticing:** `Multi-AI_Research_synthesis_prompt.md` asks three reasoning models the same question and scores the answers by agreement. Three of three means act on it, two of three means verify, one of three is either a hidden gem or noise. That idea outlived its packaging twice. It became the `/triangulate` skill, and it is the same reasoning behind the Codex peer-review pass inside [`/dark-factory`](../claude-code/commands/dark-factory.md): a second model that does not share the first one's training is the cheapest reliability gain available. The prompt is from 2025. The mechanism has not changed, only where it lives.
 
 ## Contents
 
 | File | Purpose | Notes |
 |------|---------|-------|
 | `Multi-AI_Research_synthesis_prompt.md` | Triangulate deep research from 3 reasoning AIs into convergence/divergence analysis | v5, extensively tested throughout 2025. See details below |
-| `Similarity_Score_Clacculation.md` | QA scoring for comparing text blocks across 5 dimensions | See details below |
+| `Similarity_Score_Calculation.md` | QA scoring for comparing text blocks across 5 dimensions | See details below |
 | `Architectural_Side-by-Side_Comparison.md` | Compare architectural patterns across multiple repos | See details below |
 | `Consumer_Reports_Research_ANYTHING_Template.md` | Structured comparison for choosing libraries/products | See details below |
 
@@ -40,7 +44,7 @@ Standalone prompts not yet graduated into Claude Code commands or agents.
 
 ## Similarity Score Calculation (AI Output Regression Testing)
 
-**Why this exists:** When tuning a RAG system—different embeddings, prompt variations, temperature settings—you get different answers to the same question. But there's no "correct answer" to compare against. It's like grading student essays: you can't just diff them. I needed a way to measure drift without ground truth.
+**Why this exists:** When tuning a RAG system (different embeddings, prompt variations, temperature settings) you get different answers to the same question. But there's no "correct answer" to compare against. It's like grading student essays: you can't just diff them. I needed a way to measure drift without ground truth.
 
 **How it works:** Feed in a baseline answer (your reference point, the "before") and a submitted answer (output after you changed something). The prompt scores similarity across 5 orthogonal dimensions, then averages them into a single percentage.
 

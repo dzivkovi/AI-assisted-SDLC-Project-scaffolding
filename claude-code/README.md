@@ -8,7 +8,18 @@ This directory contains custom slash commands and configuration for Claude Code.
 - **`output-styles/`** - Output styles: system-prompt-level presets for how Claude reports back to you
 - **`personas/`** - Communication style presets for different team dynamics
 - **`tools/`** - Shell utilities for working with Claude Code
+- **`archive/`** - Superseded commands, kept as a record. Never installed. See [archive/README.md](archive/README.md)
 - **`settings.json`** - Claude Code permissions and configuration
+
+## Install
+
+```bash
+./tools/sync-claude-kit.sh          # read-only drift report, changes nothing
+./tools/sync-claude-kit.sh --push   # install or update into ~/.claude
+./tools/sync-claude-kit.sh --pull   # capture edits you made in ~/.claude back into the repo
+```
+
+Prefer this over `cp -r`. It refuses to overwrite `settings.local.json` in either direction, skips symlinks, ignores line-ending-only differences, and only touches files tracked in git. `archive/` installs nowhere, by design.
 
 ## Available Commands
 
@@ -33,18 +44,17 @@ Remaining commands are custom for this project (based on [ai-strategy-consulting
 - `/dark-factory` - Unattended overnight engineering loop: takes one issue or a LIST of tickets, runs each through the full Compound Engineering chain (TDD, validation, self-review) plus a Codex (non-Anthropic) peer review and a visual smoke gate, then **merges its own work** on clean-green rebase instead of halting for review. A ticket that can't proceed safely is parked, never stalled - unsafe destructive actions outside its own branches are always parked too. Everything that needs a human is collected into one end-of-run `## Decisions` list instead of scattered halt points. Say "review mode" / "halt before merge" in the invocation to fall back to opening PRs without merging them - see the writeup: [**Software dark factories stopped being a fairy tale for me**](https://www.linkedin.com/feed/update/urn:li:activity:7453892609665810434/)
 - `/reflection` - Improvement analysis (inspired by [https://reddit.com/r/ClaudeAI/comments/1laby6h/](https://reddit.com/r/ClaudeAI/comments/1laby6h/))
 
-**Obsolete - superseded by [Compound Engineering](https://every.to/guides/compound-engineering):**
+**Moved to [`archive/`](archive/) - superseded by [Compound Engineering](https://every.to/guides/compound-engineering):**
 
-These were early, pre-publication attempts to reverse-engineer the Compound Engineering workflow (back when it was discussed but not yet released). It is now a published framework with its own commands - use those instead. Kept here only for historical reference.
+`/work`, `/issue`, `/kanban`, and `/resume` were pre-publication attempts to reverse-engineer the Compound Engineering workflow, back when it was discussed but not yet released. It is a published plugin now, with better versions of each. They are no longer installed by the sync script and no longer appear in your autocomplete. They are kept as a record of what the reconstruction looked like, with the replacement mapping in [archive/README.md](archive/README.md).
 
-- `/explore` - Chat about possible approaches - now `/ce-brainstorm`
-- `/work` - Implement a GitHub issue with TDD - now `/ce-work`
-- `/issue` - Create GitHub issues - now Compound Engineering's issue flow
-- `/kanban` - Retroactive documentation for completed work
-- `/resume` - Continue interrupted work
+`/explore` was deleted rather than archived, before that folder existed. Its reasoning survives in [ADR-0001](../docs/adr/0001-remove-explore-command.md), which turned out to be the more useful artifact.
 
 **Quality & Security:**
 - `/guardrail` - Confidentiality guardrail review (v2.6) - see [dedicated section below](#confidentiality-guardrail)
+
+**Repo setup:**
+- `/setup-labels` - Read `specs/StoryBreakdown.md`, infer epic and domain labels from it, write `.github/LABELS.md`, and create the labels via `gh`. Run it before any command that opens issues with labels, since `gh issue create` fails on a label that does not exist yet. Existing labels are skipped, so re-running after adding an epic only creates the new ones.
 
 <!-- provenance: authored 2026-08-13 in a video-intel working session; origin trail in the author's private cross-project ledger -->
 ## Why the command files carry "*Why:*" paragraphs
