@@ -73,7 +73,7 @@ It runs in both directions on purpose. `--pull` brings edits you made in `~/.cla
 
 It is a starting point, not a framework. `cp -r python/ ~/projects/YourProject` gives you a `src` layout, `pyproject.toml` with ruff and pytest configured, a CI workflow that runs both, issue and PR templates, ADR templates, and a specs directory. The source directories are empty by design and `requirements.txt` is a placeholder, because the whole point is that your project's dependencies are yours.
 
-`python/LICENSE.md` reads "All Rights Reserved" because most new projects start closed. Replace it. It is a template default and it licenses nothing in this repository, which is MIT.
+`python/LICENSE.md` reads "All Rights Reserved" because most new projects start closed. Replace it. It is a template default that licenses nothing in this repository: everything here, the scaffold files included, is MIT under the root [LICENSE](LICENSE).
 
 ### The `prompts/` folder is older than the tooling
 
