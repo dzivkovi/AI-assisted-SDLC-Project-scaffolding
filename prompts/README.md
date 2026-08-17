@@ -1,10 +1,10 @@
 # Useful Prompts
 
-Four prompts that predate slash commands being common and predate skills existing at all. In 2025 this was the whole toolchain: text you pasted into a chat window, refined by using it on decisions that mattered. They were published here in November 2025 after a year of that.
+Four prompts that predate their own packaging. Before slash commands were common and before skills existed in Claude Code, this was the toolchain: text pasted into a chat window, refined by using it on decisions that mattered. They were published here in November 2025, after months of that.
 
-They still work, unchanged, with any reasoning model. That is most of why they are worth keeping. A prompt that survives three generations of tooling was solving a real problem rather than a tooling gap.
+They remain usable, unchanged, with current reasoning models, which is most of why they are still here.
 
-**The through-line worth noticing:** `Multi-AI_Research_synthesis_prompt.md` asks three reasoning models the same question and scores the answers by agreement. Three of three means act on it, two of three means verify, one of three is either a hidden gem or noise. That idea outlived its packaging twice. It became the `/triangulate` skill, and it is the same reasoning behind the Codex peer-review pass inside [`/dark-factory`](../claude-code/commands/dark-factory.md): a second model that does not share the first one's training is the cheapest reliability gain available. The prompt is from 2025. The mechanism has not changed, only where it lives.
+**The through-line worth noticing:** `Multi-AI_Research_synthesis_prompt.md` asks three reasoning models the same question and scores the answers by agreement. Three of three means act on it, two of three means verify, one of three is either a hidden gem or noise. That idea outlived its packaging twice. It became the `/triangulate` skill, and it is the same reasoning behind the Codex peer-review pass inside [`/dark-factory`](../claude-code/commands/dark-factory.md), where a second model from a different family reviews the first one's work. The prompt is from 2025. The mechanism has not changed, only where it lives.
 
 ## Contents
 

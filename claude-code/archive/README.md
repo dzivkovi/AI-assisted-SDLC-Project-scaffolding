@@ -6,7 +6,7 @@ Nothing in here is installed by `sync-claude-kit.sh --push`, and nothing in here
 
 Between roughly May 2025 and late 2025, [Compound Engineering](https://every.to/guides/compound-engineering) was something you could watch Kieran Klaassen describe but not something you could install. The commands in `archive/commands/` are what that gap looked like from the inside: an attempt to rebuild the workflow from talks and videos, then run it daily on real work, then find out where the reconstruction was wrong.
 
-The plugin shipped. Every one of these has an official replacement that is better maintained and better documented. They are not recommendations. They are the fossil record of a working reconstruction, useful for exactly two things: seeing which parts of the idea survived contact with the official release, and seeing which gaps a solo practitioner hits first.
+The plugin shipped. Every one of these has an official replacement that is better maintained and better documented. They are not recommendations. They are kept so the reconstruction can be compared against the official release.
 
 ## What replaced what
 
@@ -18,8 +18,6 @@ The plugin shipped. Every one of these has an official replacement that is bette
 | `commands/resume.md` | `/ce-work` picking up in place | Continue interrupted work. Session resume in Claude Code itself covers most of this now. |
 | `/explore` (deleted, not archived) | `/ce-brainstorm` | Removed before this archive existed. Its reasoning is preserved in [ADR-0001](../../docs/adr/0001-remove-explore-command.md), which is the better artifact anyway. |
 
-`/explore` is the one that got deleted rather than archived, and in hindsight the ADR made that fine: a decision record explaining why a thing died is worth more than the dead thing. That is the pattern the rest of this folder is following.
+`/explore` was deleted rather than archived, and the ADR is why that was survivable: a decision record explaining why something died carries more than the dead file would have. This folder follows that pattern, with the file kept as well.
 
-## The part that was not wrong
-
-The reconstruction got one thing right early and it is still load-bearing: **the unit of work is a GitHub issue, and the workflow is what happens between opening one and closing it.** Everything current in this repo, `/dark-factory` most of all, still assumes that. The commands here were the wrong implementation of an idea that held up.
+One assumption from the reconstruction did carry forward: the unit of work is a GitHub issue, and the workflow is what happens between opening one and closing it. `/dark-factory` still works that way.

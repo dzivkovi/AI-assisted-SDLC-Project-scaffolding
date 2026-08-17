@@ -27,7 +27,7 @@ pip install -e ".[dev]"
 pip install -r requirements.txt
 ```
 
-Using [uv](https://docs.astral.sh/uv/) instead is a drop-in replacement and considerably faster:
+The same editable development install with [uv](https://docs.astral.sh/uv/), which is considerably faster. Runtime dependencies still come from `requirements.txt` as above:
 
 ```bash
 uv venv && uv pip install -e ".[dev]"
@@ -49,7 +49,7 @@ Read @specs/preferences.md
 
 ## Development workflow
 
-`ruff` handles both formatting and linting. Configuration lives in `pyproject.toml`, and CI runs exactly these commands, so a clean local run means a green build.
+`ruff` handles both formatting and linting. Configuration lives in `pyproject.toml`, and CI runs the non-mutating equivalents of these commands, so a clean local run means a green build.
 
 ```bash
 ruff format .           # format

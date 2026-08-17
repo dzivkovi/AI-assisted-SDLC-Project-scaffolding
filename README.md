@@ -6,7 +6,7 @@ Two things live here, and it is worth knowing which one you came for.
 
 **A kit you can install today.** Claude Code commands, output styles, personas, and shell tools that run a real solo engineering practice. The flagship is [`/dark-factory`](#dark-factory), an unattended overnight loop that takes GitHub issues to merged PRs while you sleep.
 
-**A paper trail you can read.** This repo has been running since November 2025, and the practice behind it since around May 2025, back when [Compound Engineering](https://every.to/guides/compound-engineering) was something you could watch someone describe but not something you could install. The early commands here were a reconstruction of that workflow from talks and videos. The plugin shipped and superseded most of them. Those files are still in the repo, dated and labeled, in [`claude-code/archive/`](claude-code/archive/) and [`prompts/`](prompts/). They are kept the way you keep photographs: not because the clothes are still in style, but because that is what learning looks like from the outside.
+**A paper trail you can read.** This repo has been running since November 2025, and the practice behind it since around May 2025, back when [Compound Engineering](https://every.to/guides/compound-engineering) was something you could watch someone describe but not something you could install. The early commands here were a reconstruction of that workflow from talks and videos. The plugin shipped and superseded most of them. Those files are still here, dated and labeled, in [`claude-code/archive/`](claude-code/archive/) and [`prompts/`](prompts/). They are kept the way you keep photographs, which is to say for the record rather than for use.
 
 MIT licensed. Take any of it.
 
@@ -23,12 +23,12 @@ Hand it a list of GitHub issues before bed. Wake up to merged PRs and one list o
 **What "unsupervised" actually required.** Three problems had to be solved before a night could run unattended:
 
 1. **Never stall.** A run that stops at 2am to ask a question wastes the whole night. So a ticket that cannot proceed safely is *parked*, not stalled: its branch is left in a safe state, a decision entry is recorded, and the run moves to the next ticket. One stuck ticket never costs the rest of the batch.
-2. **A proxy for the human.** Judgment calls go to specs and code first, then to Codex as a standing proxy. Only genuine Claude-Codex non-consensus, or a real taste or business call, comes back to the operator. This is a mixture of experts used for a specific reason: a non-Anthropic reviewer catches things an in-family reviewer does not. Empirically it has caught a non-string keyword crash, a metadata asymmetry, a cross-bucket IAM gap, and stale binding docs, all after a clean in-family review pass.
+2. **A proxy for the human.** Judgment calls go to specs and code first, then to Codex as a standing proxy. Only genuine Claude-Codex non-consensus, or a real taste or business call, comes back to the operator. This is a mixture of experts used for a specific reason: a reviewer from a different model family reads the diff differently, and has caught real defects here after an in-family review came back clean.
 3. **One list in the morning, not scattered markers.** Everything needing a human lands in a single `## Decisions` section with exact `file:line` references, both positions where there was disagreement, a recommendation, and copy-paste commands for anything only a human may execute. Each item has to be shaped as a choice. "I did X, flag if you disagree" is an FYI and belongs in the debrief body.
 
 **What it will not do while you sleep.** Destructive actions outside its own worktrees and feature branches are parked, never performed. That includes real-data deletion, schema drops, and any force-push of main. It merges its own work only on a clean rebase with green checks and review findings applied. Say "review mode" or "halt before merge" in the invocation to get the older behavior of opening PRs and stopping.
 
-**Proof rather than a promise:** [PR #41 on video-intel](https://github.com/dzivkovi/video-intel/pull/41). Eight commits, 653 tests passing including 49 new ones, a real-data smoke test matching the plan's estimate, and a multi-agent review that surfaced two polish items overnight, both applied cleanly. Ten minutes of human review the next morning, then squash and merge.
+An example of a completed run, so the description above is checkable rather than assertive: [PR #41 on video-intel](https://github.com/dzivkovi/video-intel/pull/41).
 
 - The command: [`claude-code/commands/dark-factory.md`](claude-code/commands/dark-factory.md)
 - The writeup: ["Software dark factories stopped being a fairy tale for me"](https://www.linkedin.com/feed/update/urn:li:activity:7453892609665810434/)
@@ -62,9 +62,9 @@ It runs in both directions on purpose. `--pull` brings edits you made in `~/.cla
 | [`claude-code/commands/`](claude-code/commands/) | Ten live slash commands. `/dark-factory`, `/guardrail`, `/note`, `/save`, `/learnings`, `/reflection`, `/setup-labels`, plus three from [Anthropic's cookbooks](https://github.com/anthropics/claude-cookbooks/tree/main/.claude/commands). | Current |
 | [`claude-code/output-styles/`](claude-code/output-styles/) | Five output styles, including one kept deliberately as a cautionary artifact. | Current |
 | [`claude-code/personas/`](claude-code/personas/) | Communication registers for AI-skeptical teams and client-facing work. | Current |
-| [`claude-code/tools/`](claude-code/tools/) | `sync-claude-kit.sh` (drift management) and `cs` (session GUID to human name). | Current |
+| [`claude-code/tools/`](claude-code/tools/) | `sync-claude-kit.sh` (drift management), and `claude-sessions.js` behind an optional `cs` shell function that maps session GUIDs to their human names ([manual setup](claude-code/README.md#shell-utilities-tools)). | Current |
 | [`claude-code/archive/`](claude-code/archive/) | Four commands superseded by the Compound Engineering plugin. Not installed by the sync script. | Historic |
-| [`prompts/`](prompts/) | Four research and evaluation prompts from before commands and skills existed. | Historic, still works |
+| [`prompts/`](prompts/) | Four research and evaluation prompts, written before they had anywhere to live but a chat window. | Historic, still usable |
 | [`python/`](python/) | A deliberately minimal Python project scaffold. | Current, minimal |
 | [`docs/adr/`](docs/adr/) | Architecture decision records for this repo. | Current |
 | [`docs/runbooks/`](docs/runbooks/) | [GitHub Project board setup](docs/runbooks/github-project-board.md), verified against the live API. | Current |
@@ -77,11 +77,11 @@ It is a starting point, not a framework. `cp -r python/ ~/projects/YourProject` 
 
 ### The `prompts/` folder is older than the tooling
 
-These four predate slash commands being common and predate skills existing at all. They were just text you pasted into a chat window, and they were tested hard through 2025 on real decisions.
+These four predate their own packaging. Before slash commands were common and before skills existed in Claude Code, they were text pasted into a chat window, refined by use through 2025 on real decisions.
 
 The most interesting one archaeologically is `Multi-AI_Research_synthesis_prompt.md`. Ask the same question to three reasoning models, feed all three answers back in, and get convergence scored by agreement: three of three means act on it, two of three means verify, one of three is either a hidden gem or noise. That prompt is the direct ancestor of the `/triangulate` skill and of the Codex peer-review pass inside `/dark-factory`. The idea has not changed since 2025. Only its packaging has, from prompt to command to skill.
 
-They still work as plain prompts with any reasoning model. See [`prompts/README.md`](prompts/README.md).
+They remain usable as plain prompts with current reasoning models. See [`prompts/README.md`](prompts/README.md).
 
 ## How this repo grew
 

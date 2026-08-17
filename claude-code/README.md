@@ -56,7 +56,6 @@ Remaining commands are custom for this project (based on [ai-strategy-consulting
 **Repo setup:**
 - `/setup-labels` - Read `specs/StoryBreakdown.md`, infer epic and domain labels from it, write `.github/LABELS.md`, and create the labels via `gh`. Run it before any command that opens issues with labels, since `gh issue create` fails on a label that does not exist yet. Existing labels are skipped, so re-running after adding an epic only creates the new ones.
 
-<!-- provenance: authored 2026-08-13 in a video-intel working session; origin trail in the author's private cross-project ledger -->
 ## Why the command files carry "*Why:*" paragraphs
 
 If you read a command like `dark-factory.md`, you will notice that some rules end with a dated paragraph like `*Why (2026-07-16):* PR #15 said "Closes #2" on an unverified premise - the owner read the closed ticket as shipped and discovered otherwise in production.` That is deliberate, and it is the opposite of clutter. Four reasons:
@@ -75,7 +74,7 @@ The honest limit: this only earns its tokens on **judgment rules** - rules the a
 
 ### `cs` — Claude Session name mapper
 
-CLI sessions are GUIDs (`claude --resume 286ccdec-...`); the VS Code / web picker shows human names ("Migrate MagmaInc website to Astro"). `cs` translates between them.
+CLI sessions are GUIDs (`claude --resume 286ccdec-...`); the VS Code / web picker shows human names ("Migrate the marketing site to Astro"). `cs` translates between them.
 
 **Install:**
 ```bash
