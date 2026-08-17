@@ -31,6 +31,11 @@
 #
 # Symlinks are skipped on both sides: `cp` follows a destination symlink and
 # would write through it to a path outside the tree you think you are syncing.
+#
+# archive/ is never synced either. It holds commands that were superseded and are
+# kept only as a record; installing them would put dead slash commands back in
+# your autocomplete, and pulling into it would resurrect a file that was retired
+# on purpose. It stays a read-only exhibit.
 
 set -euo pipefail
 
@@ -45,13 +50,17 @@ case "${1:-}" in
   --push) MODE="push" ;;
   --diff) MODE="diff" ;;
   ""|--report) MODE="report" ;;
-  -h|--help) sed -n '2,33p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+  -h|--help) sed -n '2,38p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
   *) echo "unknown option: $1 (try --help)" >&2; exit 2 ;;
 esac
 
 # Never synced in either direction. Direction-neutral on purpose: a --push that
 # replaces a live permissions file with the public empty template is data loss.
 NEVER_SYNC="settings.local.json"
+
+# Directories, relative to the kit root, that are records rather than kit. Same
+# direction-neutral reasoning: never installed, never pulled back into.
+NEVER_SYNC_DIR="archive"
 
 if [ "$KIT_DIR" = "$HOME_DIR" ]; then
   echo "refusing to run: repo kit and install dir are the same path ($KIT_DIR)" >&2
@@ -89,6 +98,12 @@ while IFS= read -r -d '' tracked; do
 
   if [ "$(basename "$rel")" = "$NEVER_SYNC" ]; then
     echo "  skipped        $rel  (machine-local, never synced either way)"
+    skipped=$((skipped + 1))
+    continue
+  fi
+
+  if [ "${rel%%/*}" = "$NEVER_SYNC_DIR" ]; then
+    echo "  skipped        $rel  (archived record, never synced either way)"
     skipped=$((skipped + 1))
     continue
   fi
