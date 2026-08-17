@@ -1,2 +1,7 @@
-# TODO: Add your project's main libraries here.
-# (e.g., lancedb, fastmcp, llama-index-core)
+# Runtime dependencies for this project. Empty on purpose: a scaffold that
+# pre-installs libraries you did not choose is a liability, not a head start.
+#
+# Add them here, or in pyproject.toml under [project] dependencies if you want
+# them installed with the package itself.
+#
+# e.g. lancedb, fastmcp, llama-index-core

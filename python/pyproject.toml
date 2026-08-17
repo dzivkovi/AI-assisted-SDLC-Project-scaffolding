@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "project-name"
+version = "0.1.0"
+description = "One-line description of what this project does."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["ruff", "pytest", "pytest-cov"]
+
+# The src layout: source lives in src/, tests import it as an installed package
+# rather than by accident of the current working directory. Install with
+# `pip install -e .` (or `uv pip install -e .`) so the import path is real.
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+# E/F pycodestyle+pyflakes, I import sorting, UP pyupgrade, B bugbear, SIM simplify.
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"

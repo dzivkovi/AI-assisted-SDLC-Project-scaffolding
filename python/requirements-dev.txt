@@ -1,5 +1,7 @@
-# Development Tools: linters, formatters, and testing libraries.
-# Install with: pip install -r requirements-dev.txt
-ruff
-pytest
-pytest-cov
+# Development tooling. The actual versions live in pyproject.toml under
+# [project.optional-dependencies] dev, so there is one source of truth.
+#
+#   pip install -r requirements-dev.txt
+#
+# is equivalent to `pip install -e ".[dev]"`.
+-e .[dev]

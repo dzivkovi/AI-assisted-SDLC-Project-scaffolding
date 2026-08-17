@@ -4,73 +4,74 @@
 
 ## Status
 
-🚧 In Development
+In development.
 
 ## Overview
 
 [TODO: Fill in after initial implementation. Explain the problem this project solves and the high-level solution.]
 
-## Setup & Installation
+## Setup
 
-This project requires **Python 3.12 or higher**.
+Requires **Python 3.12 or higher**.
 
 ```bash
 # 1. Create and activate a virtual environment
 python -m venv .venv
-source .venv/bin/activate  # or `.venv\Scripts\activate` on Windows
+source .venv/bin/activate      # .venv\Scripts\activate on Windows
 
-# 2. Upgrade pip (recommended)
+# 2. Install the project (editable) plus dev tooling
 python -m pip install --upgrade pip
+pip install -e ".[dev]"
 
-# 3. Install all project and development dependencies
+# 3. Runtime dependencies, once you have any
 pip install -r requirements.txt
-pip install -r requirements-dev.txt
-````
+```
 
-## AI Assistant Onboarding
+Using [uv](https://docs.astral.sh/uv/) instead is a drop-in replacement and considerably faster:
 
-To work on this project, instruct your AI assistant (e.g., Claude, Gemini) to read the project preferences file. This will ensure it follows our specific design principles and coding style.
+```bash
+uv venv && uv pip install -e ".[dev]"
+```
 
-**Run this command in your AI chat:**
+The editable install is what makes the `src` layout work: your tests import the package the way a user would, not by accident of the current working directory.
+
+## AI assistant onboarding
+
+Point your AI assistant at the project preferences before it writes anything, so it follows this project's conventions rather than its defaults.
 
 ```text
 Read @specs/preferences.md
 ```
 
-## How to Use
+## Usage
 
 [TODO: Add basic usage instructions or a code example.]
 
-```bash
-# Example:
-python main.py
-```
+## Development workflow
 
-## Development Workflow
-
-This project uses `ruff` for all formatting and linting.
+`ruff` handles both formatting and linting. Configuration lives in `pyproject.toml`, and CI runs exactly these commands, so a clean local run means a green build.
 
 ```bash
-# Auto-format all code
-ruff format .
-
-# Run linter and auto-fix what's possible
-ruff check . --fix
-
-# Run tests
-pytest -v
+ruff format .           # format
+ruff check . --fix      # lint, fixing what is safely fixable
+pytest -v               # tests
+pytest --cov=src        # tests with coverage
 ```
 
-## Project Documentation
+CI is defined in [.github/workflows/ci.yml](.github/workflows/ci.yml). It lints, then tests. An empty test suite passes on a fresh scaffold; a failing one does not.
 
-  * **Product Requirements:** [specs/PRD.md](specs/PRD.md)
-  * **Implementation Stories:** [specs/StoryBreakdown.md](specs/StoryBreakdown.md)
-  * **Project Principles:** [specs/constitution.md](specs/constitution.md)
+## Project documentation
 
-## Development Preferences
+Specs are the source of truth for what this project is meant to do, and they are what an AI assistant reads first. Only `preferences.md` ships with the scaffold. Create the rest as the project earns them.
 
-See [specs/preferences.md](specs/preferences.md) for development conventions.
+  * **Development conventions:** [specs/preferences.md](specs/preferences.md) (included)
+  * **Product requirements:** `specs/PRD.md` (create when scope firms up)
+  * **Implementation stories:** `specs/StoryBreakdown.md` (create when breaking work into issues)
+  * **Project principles:** `specs/constitution.md` (create when conventions need enforcing)
+  * **Architecture decisions:** [docs/adr/](docs/adr/) (template included, add records as decisions are made)
 
 ## License
 
-Proprietary - See LICENSE.md
+Proprietary, all rights reserved. See [LICENSE.md](LICENSE.md).
+
+This is the scaffold's default because most new projects start closed. Replace it with whatever terms this project actually needs.
