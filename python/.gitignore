@@ -48,6 +48,9 @@ ENV/
 htmlcov/
 .tox/
 
+# Linting
+.ruff_cache/
+
 # Logs
 *.log
 
