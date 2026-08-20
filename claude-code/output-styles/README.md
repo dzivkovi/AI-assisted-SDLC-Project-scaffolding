@@ -7,7 +7,9 @@ This folder now holds exactly two files, on purpose:
 | Style | What it is |
 | --- | --- |
 | [briefing.md](briefing.md) | **The one to use.** Answer first, bold only the load-bearing phrases, structure scales with the reporting burden, substantial work closes with "What's left for you" plus what was not checked. Silent while working. |
-| [concise.md](concise.md) | **Do not use.** A real style that was really used, kept as the cautionary artifact. The failure it caused, and the test it led to, are documented below. |
+| [concise.md](concise.md) | **Do not use.** A real style that was really used, kept as the cautionary artifact. The failure it caused, and the test it led to, are documented below and in [TESTING.md](TESTING.md). |
+
+The evaluation behind the choice, and the recipe for repeating it on your own style, is in **[TESTING.md](TESTING.md)**.
 
 Earlier variants (`concise-plus`, `executive`, `plain-briefing`, and the previous 727-word `briefing`) are retired, not lost: **each version of this folder is a git tag.** `git checkout briefing-v1 -- claude-code/output-styles/` restores the old set; `git diff briefing-v1..briefing-v2b -- claude-code/output-styles/briefing.md` shows exactly what the measured rewrite changed. New style versions get new tags, so the folder stays two files forever.
 
@@ -29,7 +31,7 @@ The rule that generalises: **optimise for retrieval cost, not word count.** Pres
 
 ## Measured, not asserted (2026-08-19)
 
-An earlier version of this README said the right test was a planted-omission suite and admitted it had not been built. It has been now. Method: three small fixture repos, each seeded with three findings a routine task never asks about (a committed secret; a subtly inverted guard that silently corrupts data; a cost or operational trap). Each style ran the task 3 times per fixture on Claude Opus 5, loaded as a real output style in headless sessions. A separate style-less grader scored every planted finding blind: 0 absent, 1 unweighted clause, 2 labelled with a consequence. Before any comparison, the grader was validated against the known-bad state: it had to separate `concise.md` from the working style, and it did, 3/3 vs 3/3, precisely on the subtle-finding class from the incident above.
+An earlier version of this README said the right test was a planted-omission suite and admitted it had not been built. It has been now. **[TESTING.md](TESTING.md) is the method, in full and reusable**: how the fixtures are built, why the grader must be able to fail a known-bad style before you trust it, the exact headless command, and the traps. The short version is that three fixture repos were each seeded with three findings a routine task never asks about, every style ran each task three times on Claude Opus 5 as a real loaded style, and a separate blind grader scored each planted finding 0 absent, 1 unweighted clause, 2 labelled with a consequence.
 
 | Style | Subtle-finding survival | All findings | Tool-call narration (median words; runs narrating) |
 | --- | --- | --- | --- |
@@ -44,7 +46,7 @@ Three findings worth carrying beyond the scoreboard, each traceable to [Anthropi
 2. **Anthropic's narration-cadence snippet tunes narration UP against a flat prohibition.** Their guide offers a positive cadence ("say one sentence before your first tool call...") for tuning narration down from the default. Against an explicit "do not narrate" rule it moved the other way: 9 of 9 runs narrating (median 49 words) versus 3 of 9 (median 0). The current style keeps the prohibition, deviating from the official snippet deliberately and on measurement. Their broader point stands and is also the reason this style is half its predecessor's length: [over-constraining costs quality](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models) - Anthropic deleted over 80% of Claude Code's system prompt with no measured loss.
 3. **Trimming 727 words to ~400 cost nothing measurable.** Survival was equal or better everywhere. The cut is justified by parity plus the over-constraint guidance, not claimed as a win.
 
-Honest limits: n=3 per cell detects large effects only, so 51/54 versus 49/54 is parity, not superiority; all fixtures share one shape (small repo, routine task, planted defects); long sessions and pure-chat work were not tested. The grading scale itself encodes the incident's lesson - a scale that only asked "was it mentioned?" would have scored the broken style clean.
+Honest limits, in full in [TESTING.md](TESTING.md): n=3 per cell detects large effects only, so 51/54 versus 49/54 is parity, not superiority; all fixtures share one shape; long sessions and pure-chat work were not tested.
 
 ## Creating your own
 
