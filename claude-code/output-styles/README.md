@@ -16,7 +16,7 @@ Earlier variants (`concise-plus`, `executive`, `plain-briefing`, and the previou
 ## Install
 
 ```bash
-cp claude-code/output-styles/*.md ~/.claude/output-styles/
+cp claude-code/output-styles/briefing.md ~/.claude/output-styles/
 ```
 
 Pick the style in `/config` under "Output style", or set `"outputStyle": "Briefing"` in `~/.claude/settings.json` (the value is the style's `name` field, not the filename). Styles are read at session start and prompt-cached: **restart or `/clear` before judging any change**, or you will be evaluating the old style. Keep `keep-coding-instructions: true` in the frontmatter; it layers the style on top of Claude Code's engineering behaviour instead of replacing it.

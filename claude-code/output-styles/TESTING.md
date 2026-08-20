@@ -1,75 +1,84 @@
-# How to test an output style
+# How to evaluate an output style
 
-You cannot tell whether a style is good by reading it. The file in this folder marked "do not use" reads perfectly sensibly, and it cost a day of work. This page is the method that replaced reading with measuring, short enough to copy.
+Written for output styles, but the method is general: it works for any prompt artifact you are tempted to judge by reading it. You cannot tell whether a style is good by reading it. The file in this folder marked "do not use" reads perfectly sensibly, and it cost a day of work. What follows is the method that replaced reading with measuring, in the order you should apply it to your own.
 
-## The question worth asking
+## Step 1: Score before you test. Quality is not one number.
 
-Not "is it shorter?" Length is easy to measure and nearly worthless alone. The question is whether a style **drops findings the reader needed**, because that failure costs real money and is invisible by construction: a report missing something looks exactly like a report with nothing to report.
+Do not start by building a test. Start by breaking "good" into dimensions and grading what you already have, harshly, one grade per dimension. A single overall score hides everything you need to know; a scorecard tells you exactly where to aim.
 
-So the test plants findings the task never asks about, and counts how many survive.
+This is the scorecard that started this whole exercise. The incumbent style had been in daily use for three weeks and felt fine:
 
-## The method, five steps
+| Dimension | Incumbent, graded cold |
+| --- | --- |
+| Targets the right failure (protects findings) | A- |
+| **Proof it works** | **F. No test existed, no rollback trigger written.** |
+| **Free of over-specification** | **D. 727 words, in a folder whose own README warns that long styles degrade output.** |
+| Covers the vendor's documented model behaviours | B- |
+| Internally consistent | B+ |
+| Ceremony risk on small tasks | C+ |
+| Reversible | A |
 
-**1. Build fixtures with planted findings.** Three small repos, each with a routine task (update this README, add a `--dry-run` flag) and three seeded defects the task never mentions: one obvious (a committed secret), one subtle (an inverted guard that silently corrupts data), one operational (a cost or restart trap). The subtle one is the whole point; obvious findings survive any style and tell you nothing. Have someone other than the style's author write these, or you are grading your own homework.
+Overall a B-, but the overall grade is the least useful row. **The two worst cells are the work order.** The F said: build the missing test. The D said: the trim is the change to test. Every run that followed traces back to those two cells; nothing else was touched. That discipline, one dimension per iteration, is what keeps an evaluation from sprawling.
 
-**2. Prove your grader can fail a style you already know is broken.** This step is not optional and it goes first. Run the known-bad style, grade it, and confirm the score drops. Ours did: 3 of 6 on the subtle class against 6 of 6 for the working style. A grader that scores a broken style clean cannot certify a good one, and you will have spent the whole budget before noticing.
+Two properties make a scorecard worth the ten minutes it takes:
 
-**3. Run each style for real, blind.** Not a paste of the style text into a prompt. A real headless session with the style loaded into the system prompt:
+- **Dimensions are weighted by your situation, not universally.** An operator who follows agent runs on a phone weights tool-call narration heavily; a team reading transcripts later might not care. There is no absolute quality, only fit to a use.
+- **A dimension you cannot yet measure still earns a grade.** Grade it on evidence available, mark it unproven, and let the bad grade tell you which instrument to build next.
 
-```bash
-claude -p --model opus --settings '{"outputStyle":"Briefing"}' \
-  --permission-mode acceptEdits --output-format stream-json "$TASK" > run.jsonl
-```
+## Step 2: Give each dimension an instrument
 
-The worker must not know it is being tested; it just gets the task. Three repetitions per style per fixture, minimum. One run per style measures variance and calls it a result.
+Different dimensions need different kinds of measurement. Use the cheapest one that answers the question:
 
-**4. Grade blind, on three points.** A separate process, with no output style of its own, sees the answer key and one unlabelled reply, and scores each planted finding: **0 absent, 1 mentioned as an unweighted clause, 2 surfaced with a label and a consequence.** The three-point scale is doing the real work. A two-point "was it mentioned?" scale scores the broken style clean, because its failure was never omission: it printed the bug as a clause and the reader skimmed past it.
+- **Deterministic**, wherever possible: word counts, how much text the agent emits between tool calls, whether a trivial question triggered headings. Script it from the run logs; no judge needed, no judge bias possible.
+- **Blind-judged**, for the dimension that matters most here, finding survival, because "surfaced with weight" is a judgment. The instrument is below.
+- **Declared judgment**, for what neither can reach (internal consistency, over-specification). Grade it yourself, say so, and do not dress it up as measurement.
 
-**5. Write the pass and fail rules before the data lands.** Ours: reject the candidate if it drops any finding the incumbent reliably surfaced, or falls more than one point behind on the subtle class. Secondary goals (shorter, quieter) count only if the primary holds. Deciding what "better" means after seeing the numbers is not measurement, it is alchemy.
+## Step 3: The instrument for finding survival
 
-## What was actually run
+The failure that matters is a style that **drops findings the reader needed**. It is invisible by construction: a report missing something looks exactly like a report with nothing to report. So plant findings and count survivors.
 
-| Stage | Purpose | Runs |
+1. **Build small fixture repos with planted findings.** Each has a routine task (update this README, add a `--dry-run` flag) and three seeded defects the task never mentions: one obvious (a committed secret), one subtle (an inverted guard that silently corrupts data), one operational (a cost or restart trap). The subtle one is the whole point; obvious findings survive any style and tell you nothing. Have someone other than the style's author write the fixtures, or you are grading your own homework.
+2. **Prove the grader can fail a style you already know is broken, before any comparison.** Run the known-bad style and confirm the score drops. Here it did: 3 of 6 on the subtle class against 6 of 6 for the incumbent. A grader that passes a known-broken style cannot certify a good one, and you will spend the whole budget before noticing.
+3. **Run each style for real, blind.** A real headless session with the style loaded into the system prompt, not a paste of the style text:
+
+   ```bash
+   claude -p --model opus --settings '{"outputStyle":"Briefing"}' \
+     --permission-mode acceptEdits --output-format stream-json "$TASK" > run.jsonl
+   ```
+
+   The worker just gets the task; it must not know it is being tested. Three repetitions per style per fixture, minimum.
+4. **Grade blind, on three points**: 0 absent, 1 mentioned as an unweighted clause, 2 surfaced with a label and a consequence. The three-point scale does the real work. A two-point "was it mentioned?" scale passes the broken style, because its failure was never omission: it printed the bug as a clause and the reader skimmed past it.
+5. **Write pass and fail rules before the data lands**, per dimension: here, reject the candidate if it drops any finding the incumbent reliably surfaced, or falls more than one point behind on the subtle class; length and quietness count only if that holds. Deciding what "better" means after seeing the numbers is not measurement, it is alchemy.
+
+## Step 4: Iterate one dimension at a time, and expect a surprise
+
+The first candidate fixed the D (399 words) and held survival, but a deterministic metric caught a regression nobody predicted: it narrated during tool calls in 9 of 9 runs, against 4 of 9 for the incumbent, because it had adopted the vendor's recommended narration snippet. The revision swapped that one paragraph back, got its own pass/fail bar written before its own results, and re-ran. That is the loop: score, test, fix the one failing dimension, re-test. Never fix two things in one iteration; you will not know which one worked.
+
+## Step 5: Re-score. The payoff is the same table, after.
+
+| Dimension | Before | After |
 | --- | --- | --- |
-| 0 | Prove the grader discriminates: known-bad versus incumbent | 6 |
-| 1 | Independent fixtures authored, candidate style written | 0 |
-| 2 | Incumbent versus candidate, 3 fixtures, 3 reps | 24 |
-| 3 | Revised candidate after the narration regression | 9 |
+| Protects findings | A- (asserted) | A-, measured: 51/54 vs incumbent's 49/54, subtle class equal at 17/18 |
+| Proof it works | **F** | B-. Suite exists, oracle-validated, rollback trigger written. Parity at n=3, so no superiority claimed |
+| Free of over-specification | **D** | A-. 45% shorter, survival unchanged, so the trim is proven free |
+| Covers vendor behaviours | B- | A-, with one measured, documented deviation (narration, above) |
+| Internally consistent | B+ | A- |
+| Ceremony on small tasks | C+ | B-. Measured clean on the incumbent, carried on trust for the current file |
+| Reversible | A | A. Every prior version is a git tag |
 
-39 worker runs on Claude Opus 5 plus 33 grader calls, about six hours unattended, roughly $30 to $38 of API-equivalent usage. Every measurement ran on the model under test; a cheaper model handled only orchestration and the throwaway probes.
+Movement in the exact cells the first scorecard flagged, stasis where nothing was aimed, and one cell (ceremony) honestly worse-documented than its neighbour. That texture is what a single number can never give you.
 
-## The scorecard
+## The budget
 
-Measured, subtle-finding survival first because it is the one that matters:
+39 worker runs on the model under test plus 33 blind grader calls, about six hours unattended, roughly $30 to $38 of API-equivalent usage. Stage 0 (the oracle check) was 6 of those runs and would have been the whole cost if the grader had failed it.
 
-| | concise (the one that hurt) | briefing v1 | briefing, current |
-| --- | --- | --- | --- |
-| Subtle findings surfaced with weight | **3 of 6** | 17 of 18 | 17 of 18 |
-| All planted findings | 15 of 18 | 49 of 54 | **51 of 54** |
-| Style file length | 297 words | 727 words | **399 words** |
-| Reply length, median | shortest | 636 words | 512 words |
-| Narrates during tool calls | not measured | no | **no** |
-| Ceremony on a trivial question | none | none | not probed |
+## Four traps that each produce a confident wrong answer
 
-Judged, on the qualities a measurement cannot reach:
+- **A misspelled style name loads no style at all, silently.** One arm becomes the control and the result looks like a tie. Probe every arm before spending.
+- **Vendor guidance can invert in your setup.** A snippet written to tune narration down from a chatty default tuned it up against a flat prohibition. Treat official guidance as a hypothesis about your configuration, and test it there.
+- **One grader score can flip a verdict.** Here the grader scored the same reply pattern 1 in one arm and 0 in another, and the 0 would have rejected the winner. The fix is never re-grading the inconvenient cell: check the grader scored the same pattern identically in every arm, then adjudicate with independent reviewers.
+- **A shorter file is not a win.** Shorter with survival unchanged is parity plus a smaller prompt, worth having, but it is not evidence the trim improved anything. Say "proven free", not "better".
 
-| | concise | briefing v1 | briefing, current |
-| --- | --- | --- | --- |
-| Protects findings | F, it degraded every one | A- | A- |
-| Evidence behind it | A, thoroughly measured as the control | B- | B- |
-| Free of over-specification | A | D, 727 words buying nothing measurable | A- |
-| Internally consistent | C, it gates the depth it also demands | B+ | A- |
-| Reversible | A | A | A |
+## What this cannot prove
 
-The concise column is scored on one fixture, not three; it was the control, not a contender. Note what it gets right. It is short, consistent with itself, and cheap to undo. Being wrong about one thing was enough.
-
-## Four traps that would have produced a wrong answer
-
-- **A misspelled style name loads no style at all**, silently. One arm of the experiment quietly becomes the control and the result looks like a tie. Probe every arm before spending anything.
-- **Vendor guidance can invert.** The official snippet for tuning narration down, written for a default that narrates, tuned it up against a flat prohibition: 9 of 9 runs narrating versus 3 of 9. Guidance is a hypothesis about your setup, not a fact about it.
-- **One grader score can flip a verdict.** Ours scored the same pattern 1 in one arm and 0 in another, and the 0 would have rejected the winner. The fix is not re-grading the inconvenient cell. It is checking that the grader scored the same pattern identically everywhere, then adjudicating with independent reviewers.
-- **A shorter file is not a win.** Ours came out 45 percent shorter with survival unchanged. That is parity plus a smaller prompt, which is worth having. It is not evidence that the trim improved anything.
-
-## What this does not prove
-
-Three repetitions per cell detects large effects only, so 51 against 49 is parity, not superiority. Every fixture shares one shape: a small repo, a routine task, three planted defects. Long sessions, pure conversation, and real codebases were not tested. And the deepest limit is structural: asking an agent to report what it did not check surfaces the gaps it knows about. It cannot surface a finding it never recognised as one. This narrows the blind spot. It does not close it.
+Three repetitions per cell detects large effects only. Every fixture here shares one shape: small repo, routine task, planted defects; long sessions and pure conversation were untested. And the deepest limit is structural: a style can make an agent report what it knows it did not check, but nothing can make it surface a finding it never recognised as one. The method narrows the blind spot. It does not close it.
