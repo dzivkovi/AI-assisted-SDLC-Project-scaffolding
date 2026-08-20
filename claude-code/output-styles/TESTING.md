@@ -54,6 +54,8 @@ The failure that matters is a style that **drops findings the reader needed**. I
 
 The first candidate fixed the D (399 words) and held survival, but a deterministic metric caught a regression nobody predicted: it narrated during tool calls in 9 of 9 runs, against 4 of 9 for the incumbent, because it had adopted the vendor's recommended narration snippet. The revision swapped that one paragraph back, got its own pass/fail bar written before its own results, and re-ran. That is the loop: score, test, fix the one failing dimension, re-test. Change one dimension per iteration unless separate instruments isolate each effect; otherwise you will not know which change worked.
 
+One expectation to carry in: most candidates lose. This folder shows a single winning style, but the experiment measured four, and the git tags keep every loser next to its numbers. A discarded variant with a measured reason is not waste; it is the map the next iteration starts from.
+
 ## Step 5: Re-score. The payoff is the same table, after.
 
 | Dimension | Before | After |
