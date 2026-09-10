@@ -98,6 +98,8 @@ This run is UNATTENDED end to end. Never halt the run to wait for me - not betwe
 
 `$ARGUMENTS` is usually a LIST. Process tickets SEQUENTIALLY, each in its own worktree with its own PR and debrief; rebase on latest origin/main before starting each (so ticket N+1 builds on merged ticket N). A parked ticket never blocks the next one. After the last ticket, write a night summary (`work/YYYY-MM-DD/NN-night-summary.md`): the scoreboard (ticket → PR → merged/parked), the `## Decisions for <operator>` section, follow-ups filed, and anything deferred - and repeat the Decisions list in the closing chat message.
 
+**Then pre-generate the read-along (v7, operator-driven):** after the night summary, write the storybook the `read-along` skill would build (its Phase 2 only: one self-contained HTML at `work/YYYY-MM-DD/NN-read-along-storybook.html`, most-important-first stops with the benefit/dilemma/demo boxes, the paper-trail stop carrying the same Decisions list, the audio player from `~/.claude/skills/read-along/audio-player.md` pasted in, and clickable `file://` demo links to the debriefs and any generated reports). Do NOT launch a browser at night. Name the file in the closing chat message with one line: "say `/read-along last night` to tour it". *Why (2026-09-10):* the operator caught up on three overnight runs in twelve minutes by listening to the storybook instead of reading the summaries, and had to ask twice for the voice; the walkthrough is the deliverable he reads first, so the run should hand it over ready.
+
 ## Parallel runs (two windows, one repo)
 
 Worktrees isolate the working files and each has its own index; the shared .git is lock-safe. What keeps two simultaneous runs from colliding:
