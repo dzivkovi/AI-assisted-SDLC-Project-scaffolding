@@ -34,7 +34,7 @@ An example of a completed run, so the description above is checkable rather than
 - The writeup: ["Software dark factories stopped being a fairy tale for me"](https://www.linkedin.com/feed/update/urn:li:activity:7453892609665810434/)
 - Built on [Kieran Klaassen's Compound Engineering plugin](https://github.com/EveryInc/compound-engineering-plugin)
 
-Requires an Opus-capable subscription, plus the Compound Engineering plugin and the Codex CLI for the peer-review pass. The command pins its own model tier on purpose, so a night costs and reasons the same regardless of which model your session happened to be on.
+Requires a subscription with a top-tier model (the command pins `model: fable`; change that one line to the highest tier your plan offers), plus the Compound Engineering plugin and the Codex CLI for the peer-review pass. The pin is deliberate, so a night costs and reasons the same regardless of which model your session happened to be on; the typing work inside the run is routed to a cheaper tier on purpose. Which tier to pin, how much thinking effort to set, and how to read a batch brief to decide, are in [`docs/runbooks/dark-factory-orchestrator-tier.md`](docs/runbooks/dark-factory-orchestrator-tier.md).
 
 ## Install
 
@@ -99,6 +99,7 @@ Dates are from git, not from memory.
 | 2026-06 to 2026-08 | `/dark-factory` gets calibrated by failures: a merge with no deployed smoke test, a run that closed a ticket on an unverified premise, a later run that left finished tickets open out of over-correction. Each fix carries the dated incident that caused it. |
 | 2026-08-14 | The GitHub Projects runbook re-verified against the live API. Half of it turned out to be scriptable now. |
 | 2026-08-15 | Output styles added, including the one that hid a real finding and is kept as a warning. |
+| 2026-09-21 | `/dark-factory` re-pinned from Opus to Fable as orchestrator, with the typing tier kept on Sonnet. The runbook on choosing the tier and the thinking effort per batch is written the same night. |
 
 ## Two ideas worth stealing even if you install nothing
 
