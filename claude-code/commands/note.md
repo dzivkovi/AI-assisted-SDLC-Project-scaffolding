@@ -13,27 +13,28 @@ $ARGUMENTS
 </user_instructions>
 
 - If user instructions exist above, follow them to determine WHAT content to save
-- If no instructions provided (empty), default to saving your last response
+- If no instructions provided (empty), default to saving your last response (the assistant message immediately before this `/note`)
+
+### LOSSLESS RULE (applies to every note, with or without instructions)
+You may summarize prose. You may NEVER drop or paraphrase the details. Copy these into the note exactly as they appeared in the chat, character for character:
+- every fenced code block (commands, drafts, messages the user will paste somewhere)
+- every table, with all its rows
+- every URL and every link
+- every number, date, name, file path, and quoted sentence
+A note that reads well but lost a link, a row, or a code block is a FAILED note. If in doubt, include the whole original section verbatim under its own heading rather than summarizing it. The value of a note is in its details, not in its prose.
 
 Examples:
 - `/note` → Save your last response
 - `/note (AI extraction conversation)` → Save content about AI extraction conversation
 - `/note (summary of GraphRAG implementation)` → Save summary of GraphRAG work
 
-### CRITICAL: I'll run commands to find your next file number:
-The /note command will automatically:
-1. Create today's `work` directory
-2. Check what numbered files already exist  
-3. Show you the template path with NN to replace
+### CRITICAL: YOU run the commands to find the next file number
+Nothing in this file runs by itself. Before writing, YOU run Bash to:
+1. Create today's `work/<date>` directory (date from the `date` command, never typed by hand)
+2. List what numbered files already exist there
+3. Pick the next number (NN) and a meaningful-file-name
 
-Just use `/note` and I'll handle the directory checking for you.
-
-This command will:
-1. Create the correct date folder (e.g., work/2025-11-03)
-2. Show you what numbered files already exist
-3. Tell you to pick the next number (NN) and replace meaningful-name
-
-### IMPORTANT: Copy the exact path shown in the output and use it for the Write command!
+### IMPORTANT: Use the resolved path (real date, real number, real name) in the Write call.
 
 ## 1. File Naming and Location
 
@@ -60,11 +61,11 @@ mkdir -p work/$CURRENT_DATE
 Each entry should include:
 
 - Date and timestamp (use bash command: `date +"%Y-%m-%d at %H:%M:%S %Z"`)
-
-### WARNING - COMMON BUG:
-The date July 21 is `2025-07-21` NOT `2025-01-21`!
-- 07 = July (NOT 01 which is January)
-- If today is July 21, the folder MUST be `work/2025-07-21/`
 - Context of the conversation
 - The question/query from the user
-- Your analysis and findings as seen in the chat
+- Your analysis and findings as seen in the chat, under the LOSSLESS RULE above: summarize the prose, copy the details
+
+### WARNING - COMMON BUG:
+The date July 21 is `<year>-07-21` NOT `<year>-01-21`!
+- 07 = July (NOT 01 which is January)
+- If today is July 21, the folder MUST be `work/<year>-07-21/`
