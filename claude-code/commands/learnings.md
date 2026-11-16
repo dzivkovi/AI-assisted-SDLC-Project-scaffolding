@@ -385,4 +385,4 @@ Knowledge compounds. Each session builds on the last.
 
 - `/save` - Quick fire-and-forget save of last response or specified content
 - `/note` - Older save variant with more verbose format
-- `/compound-engineering:\workflows:compound` - Kieran's bug-fix documentation (for code problems, not learning consolidation)
+- `/compound-engineering:ce-compound` - Kieran's bug-fix documentation (for code problems, not learning consolidation)
